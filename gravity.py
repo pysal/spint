@@ -20,7 +20,7 @@ import numpy as np
 from scipy import sparse as sp
 from pysal.spreg import user_output as User
 from pysal.spreg.utils import sphstack
-from pysal..glm.utils import cache_readonly
+from pysal_core.glm.utils import cache_readonly
 from .count_model import CountModel
 from .utils import sorensen, srmse, spcategorical
 

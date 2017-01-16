@@ -6,8 +6,8 @@ types of estimation technqiues.
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
 import numpy as np
-from pysal.glm import GLM
-from pysal.glm.family import Poisson, QuasiPoisson
+from pysal_core.glm import GLM
+from pysal_core.glm.family import Poisson, QuasiPoisson
 
 class CountModel(object):
     """
