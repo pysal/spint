@@ -12,9 +12,9 @@ __author__ = 'Taylor Oshan tayoshan@gmail.com'
 import unittest
 import numpy as np
 import pysal
-from pysal.contrib.spint.count_model import CountModel
-from pysal.contrib.glm.family import Poisson
-from pysal.contrib.spint.dispersion import phi_disp, alpha_disp
+from spint.count_model import CountModel
+from glm.family import Poisson
+from spint.dispersion import phi_disp, alpha_disp
 
 class TestDispersion(unittest.TestCase):
 

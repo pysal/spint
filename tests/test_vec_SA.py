@@ -9,8 +9,8 @@ import unittest
 import numpy as np
 np.random.seed(1)
 import pysal
-from pysal.contrib.spint.vec_SA import VecMoran
-from pysal.weights import DistanceBand
+from spint.vec_SA import VecMoran
+from pysal_core.weights import DistanceBand
 
 class TestVecMoran(unittest.TestCase):
     """Tests VecMoran class"""

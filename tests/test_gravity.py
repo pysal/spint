@@ -15,7 +15,7 @@ started in spatial interaction modelling (Working Paper No. 184). UCL: Citeseer.
 import unittest
 import math
 import numpy as np
-from pysal.contrib.spint import gravity as grav
+from spint import gravity as grav
 
 class TestGravity(unittest.TestCase):
     """Tests for gravity-type models"""
