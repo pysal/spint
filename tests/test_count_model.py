@@ -12,8 +12,8 @@ __author__ = 'Taylor Oshan tayoshan@gmail.com'
 import unittest
 import numpy as np
 import pysal
-from spint.count_model import CountModel
-from glm.family import Poisson
+from pysal_glm.family import Poisson
+from ..count_model import CountModel
 
 class TestCountModel(unittest.TestCase):
     """Tests CountModel class"""
