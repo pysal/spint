@@ -1,6 +1,6 @@
-import gravity 
+from . import gravity 
 from .gravity import Gravity, Production, Attraction, Doubly
-import dispersion
-import utils
-import vec_SA
-import count_model
+from . import dispersion
+from . import utils
+from . import vec_SA
+from . import count_model
