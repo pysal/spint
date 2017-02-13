@@ -15,7 +15,7 @@ started in spatial interaction modelling (Working Paper No. 184). UCL: Citeseer.
 import unittest
 import math
 import numpy as np
-from ..spint import gravity as grav
+from ..gravity import BaseGravity, Gravity, Production, Attraction, Doubly
 
 class TestGravity(unittest.TestCase):
     """Tests for gravity-type models"""
@@ -87,7 +87,7 @@ class TestGravity(unittest.TestCase):
     def test_BaseGravity_exp(self):
         f = np.array(self.f).reshape((-1,1))
         dij = np.array(self.dij).reshape((-1,1))
-        model = grav.BaseGravity(f, dij, 'exp', constant=False)
+        model = BaseGravity(f, dij, 'exp', constant=False)
         np.testing.assert_allclose(model.params, [0.01641585], atol = .0001)
         self.assertAlmostEqual(model.AIC, 957622.28429746185, delta = .0001)
         np.testing.assert_allclose(model.cov_params, [[  1.92096665e-10]])
@@ -126,7 +126,7 @@ class TestGravity(unittest.TestCase):
     def test_BaseGravity_pow(self):
         f = np.array(self.f).reshape((-1,1))
         dij = np.array(self.dij).reshape((-1,1))
-        model = grav.BaseGravity(f, dij, 'pow', constant=False)
+        model = BaseGravity(f, dij, 'pow', constant=False)
         np.testing.assert_allclose(model.params, [ 1.27223738], atol = .0001)
         self.assertAlmostEqual(model.AIC, 377298.04716333596, delta = .0001)
         np.testing.assert_allclose(model.cov_params, [[  4.31955426e-07]])
@@ -159,7 +159,7 @@ class TestGravity(unittest.TestCase):
     def test_QuasiPoisson(self):
         f = np.array(self.f).reshape((-1,1))
         dij = np.array(self.dij).reshape((-1,1))
-        model = grav.BaseGravity(f, dij, 'exp', constant=False, Quasi=True)
+        model = BaseGravity(f, dij, 'exp', constant=False, Quasi=True)
         np.testing.assert_allclose(model.params, [0.01641585], atol = .0001)
         self.assertTrue(math.isnan(model.AIC))
         np.testing.assert_allclose(model.cov_params, [[ 0.00079749]],
@@ -197,7 +197,7 @@ class TestGravity(unittest.TestCase):
             1.75492594e+02,   6.97553001e+01,   6.54702760e+00])
     
     def test_Gravity(self):
-        model = grav.Gravity(self.f, self.o_var, self.d_var,
+        model = Gravity(self.f, self.o_var, self.d_var,
                 self.dij, 'exp', constant=True)
         np.testing.assert_allclose(model.params, [ -7.95447436e+00,
             8.63867812e-01,   8.80474585e-01, -6.20544765e-03])
@@ -247,7 +247,7 @@ class TestGravity(unittest.TestCase):
         self.assertAlmostEquals(model.SRMSE, 0.62067966421627441)
 
     def test_local_Gravity(self):
-        model = grav.Gravity(self.f, self.o_var, self.d_var, self.dij, 'exp')
+        model = Gravity(self.f, self.o_var, self.d_var, self.dij, 'exp')
         local = model.local(loc_index=self.o, locs=np.unique(self.o))
         self.assertEqual(local.keys().sort(), ['stde0',
                                                 'stde1',
@@ -271,7 +271,7 @@ class TestGravity(unittest.TestCase):
                                                 'param2'].sort())
     
     def test_Production(self):
-        model = grav.Production(self.f, self.o, self.d_var,
+        model = Production(self.f, self.o, self.d_var,
                 self.dij, 'exp', constant=True)
         np.testing.assert_allclose(model.params, 
                 [-1.11700938,  1.68662317, 2.15188689,  0.60300297,
@@ -373,7 +373,7 @@ class TestGravity(unittest.TestCase):
         self.assertAlmostEquals(model.SRMSE, 0.46626328789729393)
 
     def test_local_Production(self):
-        model = grav.Production(self.f, self.o, self.d_var, self.dij, 'exp')
+        model = Production(self.f, self.o, self.d_var, self.dij, 'exp')
         local = model.local(locs=np.unique(self.o))
         self.assertEqual(local.keys().sort(), ['stde0',
                                                 'stde1',
@@ -397,7 +397,7 @@ class TestGravity(unittest.TestCase):
                                                 'param2'].sort())
                                                   
     def test_Attraction(self):
-        model = grav.Production(self.f, self.d, self.o_var,
+        model = Production(self.f, self.d, self.o_var,
                 self.dij, 'exp', constant=True)
         np.testing.assert_allclose(model.params, 
          [-0.88439723,  1.62180605,  1.92772078,  0.12462001,  0.62378812,
@@ -499,7 +499,7 @@ class TestGravity(unittest.TestCase):
         self.assertAlmostEquals(model.SRMSE, 0.59483126233090433)
 
     def test_local_Attraction(self):
-        model = grav.Attraction(self.f, self.d, self.o_var, self.dij, 'exp')
+        model = Attraction(self.f, self.d, self.o_var, self.dij, 'exp')
         local = model.local(locs=np.unique(self.d))
         self.assertEqual(local.keys().sort(), ['stde0',
                                                 'stde1',
@@ -523,7 +523,7 @@ class TestGravity(unittest.TestCase):
                                                 'param2'].sort())
 
     def test_Doubly(self):
-        model = grav.Doubly(self.f, self.o, self.d,
+        model = Doubly(self.f, self.o, self.d,
                 self.dij, 'exp', constant=True)
         np.testing.assert_allclose(model.params, 
             [ 6.20471518,  1.5449095,   2.4414292,   0.69924374,  
