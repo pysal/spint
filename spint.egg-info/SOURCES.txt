@@ -1,0 +1,7 @@
+setup.py
+spint.egg-info/PKG-INFO
+spint.egg-info/SOURCES.txt
+spint.egg-info/dependency_links.txt
+spint.egg-info/not-zip-safe
+spint.egg-info/requires.txt
+spint.egg-info/top_level.txt

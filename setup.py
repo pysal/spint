@@ -13,7 +13,7 @@ setup(name='spint', #name of package
       maintainer_email='tayoshan@gmail.com', 
       test_suite = 'nose.collector',
       tests_require=['nose'],
-      keywords='spatial statistics'
+      keywords='spatial statistics',
       classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Science/Research',
@@ -30,8 +30,8 @@ setup(name='spint', #name of package
         ],
       license='3-Clause BSD',
       packages=[],
-      install_requires=['numpy', 'scipy', 'libpysal',
+      install_requires=['numpy', 'scipy', 'libpysal'
                         # other dependencies
-                        ,],
+                        ],
       zip_safe=False,
       cmdclass = {'build.py':build_py})
