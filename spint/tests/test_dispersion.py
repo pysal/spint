@@ -11,7 +11,6 @@ __author__ = 'Taylor Oshan tayoshan@gmail.com'
 
 import unittest
 import numpy as np
-import pysal
 import libpysal
 from spglm.family import Poisson
 from ..count_model import CountModel
@@ -20,7 +19,7 @@ from ..dispersion import phi_disp, alpha_disp
 class TestDispersion(unittest.TestCase):
 
     def setUp(self):
-        db = pysal.open(libpysal.examples.get_path('columbus.dbf'),'r')
+        db = libpysal.open(libpysal.examples.get_path('columbus.dbf'),'r')
         y =  np.array(db.by_col("HOVAL"))
         y = np.reshape(y, (49,1))
         self.y = np.round(y).astype(int) 
