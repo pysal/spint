@@ -12,14 +12,15 @@ __author__ = 'Taylor Oshan tayoshan@gmail.com'
 import unittest
 import numpy as np
 import pysal
-from pysal_glm.family import Poisson
+import libpysal
+from spglm.family import Poisson
 from ..count_model import CountModel
 
 class TestCountModel(unittest.TestCase):
     """Tests CountModel class"""
 
     def setUp(self):
-        db = pysal.open(pysal.examples.get_path('columbus.dbf'),'r')
+        db = pysal.open(libpysal.examples.get_path('columbus.dbf'),'r')
         y =  np.array(db.by_col("HOVAL"))
         y = np.reshape(y, (49,1))
         self.y = np.round(y).astype(int)

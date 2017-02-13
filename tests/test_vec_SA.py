@@ -9,7 +9,7 @@ import unittest
 import numpy as np
 np.random.seed(1)
 import pysal
-from pysal_core.weights import DistanceBand
+from libpysal.weights import DistanceBand
 from ..vec_SA import VecMoran
 
 class TestVecMoran(unittest.TestCase):
