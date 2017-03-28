@@ -244,7 +244,7 @@ class TestGravity(unittest.TestCase):
         self.assertAlmostEquals(model.SSI, 0.72706171189789603)
         self.assertAlmostEquals(model.pseudoR2, 0.88421303645743465)
         self.assertAlmostEquals(model.adj_pseudoR2, 0.88416760104130376)
-        self.assertAlmostEquals(model.SRMSE, 62063116008447083)
+        self.assertAlmostEquals(model.SRMSE, 0.62063116008447083)
 
     def test_local_Gravity(self):
         model = Gravity(self.f, self.o_var, self.d_var, self.dij, 'exp')
