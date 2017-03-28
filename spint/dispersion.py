@@ -6,8 +6,8 @@ a variable.
 
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
-from pysal_core.glm.glm import GLM
-from pysal_core.glm.family import Poisson
+from spglm.glm import GLM
+from spglm.family import Poisson
 import numpy as np
 import scipy.stats as stats
 from types import FunctionType

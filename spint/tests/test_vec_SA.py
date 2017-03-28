@@ -8,9 +8,8 @@ __author__ = 'Taylor Oshan tayoshan@gmail.com'
 import unittest
 import numpy as np
 np.random.seed(1)
-import pysal
-from pysal.contrib.spint.vec_SA import VecMoran
-from pysal.weights import DistanceBand
+from libpysal.weights.Distance import DistanceBand
+from ..vec_SA import VecMoran
 
 class TestVecMoran(unittest.TestCase):
     """Tests VecMoran class"""

@@ -20,7 +20,7 @@ import numpy as np
 from scipy import sparse as sp
 from pysal.spreg import user_output as User
 from pysal.spreg.utils import sphstack
-from pysal_core.glm.utils import cache_readonly
+from spglm.utils import cache_readonly
 from .count_model import CountModel
 from .utils import sorensen, srmse, spcategorical
 
@@ -142,9 +142,9 @@ class BaseGravity(CountModel):
     Example
     -------
     >>> import numpy as np
-    >>> import pysal
-    >>> from pysal.contrib.spint.gravity import BaseGravity
-    >>> db = pysal.open(pysal.examples.get_path('nyc_bikes_ct.csv'))
+    >>> import libpysal
+    >>> from spint.gravity import BaseGravity
+    >>> db = libpysal.open(libpysal.examples.get_path('nyc_bikes_ct.csv'))
     >>> cost = np.array(db.by_col('tripduration')).reshape((-1,1))
     >>> flows = np.array(db.by_col('count')).reshape((-1,1))
     >>> model = BaseGravity(flows, cost)
@@ -396,9 +396,9 @@ class Gravity(BaseGravity):
     Example
     -------
     >>> import numpy as np
-    >>> import pysal
-    >>> from pysal.contrib.spint.gravity import Gravity
-    >>> db = pysal.open(pysal.examples.get_path('nyc_bikes_ct.csv'))
+    >>> import libpysal
+    >>> from spint.gravity import Gravity
+    >>> db = libpysal.open(libpysal.examples.get_path('nyc_bikes_ct.csv'))
     >>> cost = np.array(db.by_col('tripduration')).reshape((-1,1))
     >>> flows = np.array(db.by_col('count')).reshape((-1,1))
     >>> o_cap = np.array(db.by_col('o_cap')).reshape((-1,1))
@@ -466,6 +466,7 @@ class Gravity(BaseGravity):
         results['SRMSE'] = []
         for cov in range(covs):
             results['param' + str(cov)] = []
+            results['stde' + str(cov)] = []
             results['pvalue' + str(cov)] = []
             results['tvalue' + str(cov)] = []
         for loc in locs:
@@ -486,6 +487,7 @@ class Gravity(BaseGravity):
             results['SRMSE'].append(model.SRMSE)
             for cov in range(covs):
                 results['param' + str(cov)].append(model.params[cov])
+                results['stde' + str(cov)].append(model.std_err[cov])
                 results['pvalue' + str(cov)].append(model.pvalues[cov])
                 results['tvalue' + str(cov)].append(model.tvalues[cov])
         return results
@@ -604,9 +606,9 @@ class Production(BaseGravity):
     -------
 
     >>> import numpy as np
-    >>> import pysal
-    >>> from pysal.contrib.spint.gravity import Production
-    >>> db = pysal.open(pysal.examples.get_path('nyc_bikes_ct.csv'))
+    >>> import libpysal
+    >>> from spint.gravity import Production
+    >>> db = libpysal.open(libpysal.examples.get_path('nyc_bikes_ct.csv'))
     >>> cost = np.array(db.by_col('tripduration')).reshape((-1,1))
     >>> flows = np.array(db.by_col('count')).reshape((-1,1))
     >>> o = np.array(db.by_col('o_tract')).reshape((-1,1))
@@ -651,6 +653,7 @@ class Production(BaseGravity):
                       and values are lists of location specific values
         """
         results = {}
+        offset = 1
         covs = self.dv.shape[1] + 1
         results['AIC'] = []
         results['deviance'] = []
@@ -662,6 +665,7 @@ class Production(BaseGravity):
         results['SRMSE'] = []
         for cov in range(covs):
             results['param' + str(cov)] = []
+            results['stde' + str(cov)] = []
             results['pvalue' + str(cov)] = []
             results['tvalue' + str(cov)] = []
         if locs is None:
@@ -682,9 +686,10 @@ class Production(BaseGravity):
             results['SSI'].append(model.SSI)
             results['SRMSE'].append(model.SRMSE)
             for cov in range(covs):
-                results['param' + str(cov)].append(model.params[cov])
-                results['pvalue' + str(cov)].append(model.pvalues[cov])
-                results['tvalue' + str(cov)].append(model.tvalues[cov])
+                results['param' + str(cov)].append(model.params[offset+cov])
+                results['stde' + str(cov)].append(model.std_err[offset+cov])
+                results['pvalue' + str(cov)].append(model.pvalues[offset+cov])
+                results['tvalue' + str(cov)].append(model.tvalues[offset+cov])
         return results
 
 class Attraction(BaseGravity):
@@ -801,9 +806,9 @@ class Attraction(BaseGravity):
     Example
     -------
     >>> import numpy as np
-    >>> import pysal
-    >>> from pysal.contrib.spint.gravity import Attraction
-    >>> db = pysal.open(pysal.examples.get_path('nyc_bikes_ct.csv'))
+    >>> import libpysal
+    >>> from spint.gravity import Attraction
+    >>> db = libpysal.open(libpysal.examples.get_path('nyc_bikes_ct.csv'))
     >>> cost = np.array(db.by_col('tripduration')).reshape((-1,1))
     >>> flows = np.array(db.by_col('count')).reshape((-1,1))
     >>> d = np.array(db.by_col('d_tract')).reshape((-1,1))
@@ -846,6 +851,7 @@ class Attraction(BaseGravity):
                       and values are lists of location specific values
         """
         results = {}
+        offset = 1
         covs = self.ov.shape[1] + 1
         results['AIC'] = []
         results['deviance'] = []
@@ -857,6 +863,7 @@ class Attraction(BaseGravity):
         results['SRMSE'] = []
         for cov in range(covs):
             results['param' + str(cov)] = []
+            results['stde' + str(cov)] = []
             results['pvalue' + str(cov)] = []
             results['tvalue' + str(cov)] = []
         if locs is  None:
@@ -877,9 +884,10 @@ class Attraction(BaseGravity):
             results['SSI'].append(model.SSI)
             results['SRMSE'].append(model.SRMSE)
             for cov in range(covs):
-                results['param' + str(cov)].append(model.params[cov])
-                results['pvalue' + str(cov)].append(model.pvalues[cov])
-                results['tvalue' + str(cov)].append(model.tvalues[cov])
+                results['param' + str(cov)].append(model.params[offset+cov])
+                results['stde' + str(cov)].append(model.std_err[offset+cov])
+                results['pvalue' + str(cov)].append(model.pvalues[offset+cov])
+                results['tvalue' + str(cov)].append(model.tvalues[offset+cov])
         return results
 
 class Doubly(BaseGravity):
@@ -1001,9 +1009,9 @@ class Doubly(BaseGravity):
     Example
     -------
     >>> import numpy as np
-    >>> import pysal
-    >>> from pysal.contrib.spint.gravity import Doubly
-    >>> db = pysal.open(pysal.examples.get_path('nyc_bikes_ct.csv'))
+    >>> import libpsal
+    >>> from spint.gravity import Doubly
+    >>> db = libpysal.open(libpysal.examples.get_path('nyc_bikes_ct.csv'))
     >>> cost = np.array(db.by_col('tripduration')).reshape((-1,1))
     >>> flows = np.array(db.by_col('count')).reshape((-1,1))
     >>> d = np.array(db.by_col('d_tract')).reshape((-1,1))
