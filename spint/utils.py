@@ -54,13 +54,13 @@ def srmse(model):
     """
     n = model.n
     try:
-        y = model.y.reshape((-1,1))
+        y = model.y.reshape((-1,1)).astype(float)
     except:
-        y = model.f.reshape((-1,1))
+        y = model.f.reshape((-1,1)).astype(float)
     try:
-        yhat = model.yhat.reshape((-1,1))
+        yhat = model.yhat.reshape((-1,1)).astype(float)
     except:
-        yhat = model.mu.reshape((-1,1))
+        yhat = model.mu.reshape((-1,1)).astype(float)
     srmse = ((np.sum((y-yhat)**2)/n)**.5)/(np.sum(y)/n)
     return srmse
 
