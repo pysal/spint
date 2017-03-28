@@ -61,7 +61,7 @@ def srmse(model):
         yhat = model.yhat.reshape((-1,1))
     except:
         yhat = model.mu.reshape((-1,1))
-    srmse = ((np.sum((y-yhat)**2)//n)**.5)//(np.sum(y)//n)
+    srmse = ((np.sum((y-yhat)**2)/n)**.5)/(np.sum(y)/n)
     return srmse
 
 def spcategorical(index):
