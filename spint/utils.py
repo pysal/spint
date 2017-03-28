@@ -52,7 +52,7 @@ def srmse(model):
     """
     Standardized root mean square error
     """
-    n = model.n
+    n = float(model.n)
     try:
         y = model.y.reshape((-1,1)).astype(float)
     except:
