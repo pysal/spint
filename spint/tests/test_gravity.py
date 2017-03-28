@@ -244,7 +244,7 @@ class TestGravity(unittest.TestCase):
         self.assertAlmostEquals(model.SSI, 0.72706171189789603)
         self.assertAlmostEquals(model.pseudoR2, 0.88421303645743465)
         self.assertAlmostEquals(model.adj_pseudoR2, 0.88416760104130376)
-        self.assertAlmostEquals(model.SRMSE, 0.62067966421627441)
+        self.assertAlmostEquals(model.SRMSE, 62063116008447083)
 
     def test_local_Gravity(self):
         model = Gravity(self.f, self.o_var, self.d_var, self.dij, 'exp')
@@ -370,7 +370,7 @@ class TestGravity(unittest.TestCase):
         self.assertAlmostEquals(model.SSI, 0.740619203383)
         self.assertAlmostEquals(model.pseudoR2, 0.909920590111)
         self.assertAlmostEquals(model.adj_pseudoR2, 0.909795642717)
-        self.assertAlmostEquals(model.SRMSE, 0.46626328789729393)
+        self.assertAlmostEquals(model.SRMSE, 0.46622685091043831)
 
     def test_local_Production(self):
         model = Production(self.f, self.o, self.d_var, self.dij, 'exp')
@@ -496,7 +496,7 @@ class TestGravity(unittest.TestCase):
         self.assertAlmostEquals(model.SSI, .750634498293)
         self.assertAlmostEquals(model.pseudoR2, .90768716507)
         self.assertAlmostEquals(model.adj_pseudoR2, .907562217676)
-        self.assertAlmostEquals(model.SRMSE, 0.59483126233090433)
+        self.assertAlmostEquals(model.SRMSE, 0.59478477816884223)
 
     def test_local_Attraction(self):
         model = Attraction(self.f, self.d, self.o_var, self.dij, 'exp')
@@ -693,7 +693,7 @@ class TestGravity(unittest.TestCase):
         self.assertAlmostEquals(model.SSI, .811852110904)
         self.assertAlmostEquals(model.pseudoR2, .943539912198)
         self.assertAlmostEquals(model.adj_pseudoR2, .943335452826)
-        self.assertAlmostEquals(model.SRMSE, 0.37928618532947161)
+        self.assertAlmostEquals(model.SRMSE, 0.37925654532618808)
 
 if __name__ == '__main__':
     unittest.main()
