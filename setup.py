@@ -8,7 +8,7 @@ except ImportError:
 setup(name='spint', #name of package
       version='1.0.0',
       description='SPatial INTeraction models', #short <80chr description
-      url='https://github.com/pysal/spint', #github repo
+      url='https://github.com/TaylorOshan/spint', #github repo
       download_url='https://pypi.python.org/pypi/spint',
       maintainer='Taylor M. Oshan', 
       maintainer_email='tayoshan@gmail.com', 
