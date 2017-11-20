@@ -6,9 +6,10 @@ except ImportError:
     from distutils.command.build_py import build_py
 
 setup(name='spint', #name of package
-      version='1.0.0dev',
+      version='1.0.0',
       description='SPatial INTeraction models', #short <80chr description
       url='https://github.com/pysal/spint', #github repo
+      download_url='https://pypi.python.org/pypi/spint',
       maintainer='Taylor M. Oshan', 
       maintainer_email='tayoshan@gmail.com', 
       test_suite = 'nose.collector',
@@ -29,9 +30,7 @@ setup(name='spint', #name of package
         'Programming Language :: Python :: 3.4'
         ],
       license='3-Clause BSD',
-      packages=[],
-      install_requires=['numpy', 'scipy', 'libpysal'
-                        # other dependencies
-                        ],
+      packages=['spint'],
+      install_requires=['numpy', 'scipy', 'libpysal', 'pysal'],
       zip_safe=False,
       cmdclass = {'build.py':build_py})
