@@ -18,12 +18,9 @@ before_install:
   - ./miniconda.sh -b -p ./miniconda
   - export PATH=`pwd`/miniconda/bin:$PATH
   - conda update --yes conda
-  - conda config --add channels conda-forge
+  - conda config --append channels conda-forge
   - conda create -y -q -n test-env python=$TRAVIS_PYTHON_VERSION
   - source activate test-env
-  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; 
-        then 2to3 -nw spint > /dev/null; 
-    fi
 
 install:
   - conda install --yes pip

@@ -249,7 +249,7 @@ class TestGravity(unittest.TestCase):
     def test_local_Gravity(self):
         model = Gravity(self.f, self.o_var, self.d_var, self.dij, 'exp')
         local = model.local(loc_index=self.o, locs=np.unique(self.o))
-        self.assertEqual(local.keys().sort(), ['stde0',
+        self.assertEqual(list(local.keys()).sort(), ['stde0',
                                                 'stde1',
                                                 'stde2',
                                                 'pvalue2', 
@@ -375,7 +375,7 @@ class TestGravity(unittest.TestCase):
     def test_local_Production(self):
         model = Production(self.f, self.o, self.d_var, self.dij, 'exp')
         local = model.local(locs=np.unique(self.o))
-        self.assertEqual(local.keys().sort(), ['stde0',
+        self.assertEqual(list(local.keys()).sort(), ['stde0',
                                                 'stde1',
                                                 'stde2',
                                                 'pvalue2', 
@@ -501,7 +501,7 @@ class TestGravity(unittest.TestCase):
     def test_local_Attraction(self):
         model = Attraction(self.f, self.d, self.o_var, self.dij, 'exp')
         local = model.local(locs=np.unique(self.d))
-        self.assertEqual(local.keys().sort(), ['stde0',
+        self.assertEqual(list(local.keys()).sort(), ['stde0',
                                                 'stde1',
                                                 'stde2',
                                                 'pvalue2', 
