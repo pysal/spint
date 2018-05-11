@@ -3,7 +3,7 @@ from setuptools import setup
 from distutils.command.build_py import build_py
 
 setup(name='spint', #name of package
-      version='1.0.0',
+      version='1.0.1',
       description='SPatial INTeraction models', #short <80chr description
       url='https://github.com/TaylorOshan/spint', #github repo
       download_url='https://pypi.python.org/pypi/spint',
