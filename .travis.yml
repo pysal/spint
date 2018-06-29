@@ -26,6 +26,8 @@ install:
   - conda install --yes --file requirements.txt;
   - conda install --yes nose
   - pip install libpysal
+  - pip install spreg
+  - pip install spglm
   - pip install -r requirements_dev.txt
 
 script:
