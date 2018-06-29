@@ -28,6 +28,6 @@ setup(name='spint', #name of package
         ],
       license='3-Clause BSD',
       packages=['spint'],
-      install_requires=['scipy', 'numpy', 'pysal', 'libpysal', 'spglm'],
+      install_requires=['scipy', 'numpy', 'spreg', 'libpysal', 'spglm'],
       zip_safe=False,
       cmdclass = {'build.py':build_py})

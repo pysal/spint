@@ -26,12 +26,8 @@ install:
   - conda install --yes --file requirements.txt;
   - conda install --yes nose
   - pip install libpysal
-  - cd ../ && git clone https://github.com/TaylorOshan/spglm.git
-  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; 
-        then 2to3 -nw spglm/ > /dev/null; 
-    fi
-  - pip install -e ./spglm
-  - cd ./spint
+  - pip install spreg
+  - pip install spglm
   - pip install -r requirements_dev.txt
 
 script:
