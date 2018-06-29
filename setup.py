@@ -2,8 +2,13 @@ from setuptools import setup
 
 from distutils.command.build_py import build_py
 
+Major = 1
+Feature = 0
+Bug = 2
+version = '%d.%d.%d' % (Major, Feature, Bug)
+
 setup(name='spint', #name of package
-      version='1.0.1',
+      version=version,
       description='SPatial INTeraction models', #short <80chr description
       url='https://github.com/TaylorOshan/spint', #github repo
       download_url='https://pypi.python.org/pypi/spint',
