@@ -1,6 +1,4 @@
-from . import gravity 
 from .gravity import Gravity, Production, Attraction, Doubly
-from . import dispersion
-from . import utils
-from . import vec_SA
-from . import count_model
+from .utils import CPC, sorensen, smrse, 
+from .vec_SA import VecMoran as Moran_Vector
+from .dispersion import import phi_disp, alpha_disp
