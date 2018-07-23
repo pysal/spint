@@ -4,7 +4,7 @@ from distutils.command.build_py import build_py
 
 Major = 1
 Feature = 0
-Bug = 2
+Bug = 3
 version = '%d.%d.%d' % (Major, Feature, Bug)
 
 setup(name='spint', #name of package
