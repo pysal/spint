@@ -19,7 +19,7 @@ class TestCountModel(unittest.TestCase):
     """Tests CountModel class"""
 
     def setUp(self):
-        db = libpysal.open(libpysal.examples.get_path('columbus.dbf'),'r')
+        db = libpysal.io.open(libpysal.examples.get_path('columbus.dbf'),'r')
         y =  np.array(db.by_col("HOVAL"))
         y = np.reshape(y, (49,1))
         self.y = np.round(y).astype(int)
