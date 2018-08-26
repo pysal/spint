@@ -7,9 +7,9 @@ with open('spint/__init__.py', 'r') as f:
     exec(f.readline())
 
 setup(name='spint', #name of package
-      version=version,
+      version=__version__,
       description='SPatial INTeraction models', #short <80chr description
-      url='https://github.com/TaylorOshan/spint', #github repo
+      url='https://github.com/pysal/spint', #github repo
       download_url='https://pypi.python.org/pypi/spint',
       maintainer='Taylor M. Oshan', 
       maintainer_email='tayoshan@gmail.com', 
