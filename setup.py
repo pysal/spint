@@ -31,7 +31,7 @@ setup(name='spint', #name of package
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4'
         ],
-      license='3-Clause BSD',
+      license='2-Clause BSD',
       packages=['spint'],
       install_requires=['scipy', 'numpy', 'spreg', 'libpysal', 'spglm'],
       zip_safe=False,
