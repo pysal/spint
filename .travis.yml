@@ -24,15 +24,12 @@ before_install:
 install:
   - conda install --yes pip
   - conda install --yes --file requirements.txt;
-  - conda install --yes nose
-  - pip install libpysal
-  - pip install spreg
-  - pip install spglm
-  - pip install -r requirements_dev.txt
+  - pip install -r requirements_tests.txt
 
 script:
   - python setup.py sdist >/dev/null
-  - nosetests --with-coverage --cover-package=spint;
+  - python setup.py install
+  - nosetests --verbose --with-coverage --cover-package=spint;
 
 notifications:
     email:
