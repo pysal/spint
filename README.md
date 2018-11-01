@@ -1,6 +1,11 @@
 Spatial Interaction Modeling Package
 ===========================================
 
+[![Build Status](https://travis-ci.org/pysal/spint.svg?branch=master)](https://travis-ci.org/pysal/spint)
+[![Documentation Status](https://readthedocs.org/projects/spint/badge/?version=latest)](https://spint.readthedocs.io/en/latest/?badge=latest)
+[![PyPI version](https://badge.fury.io/py/spint.svg)](https://badge.fury.io/py/spint)
+
+
 The **Sp**atial **Int**eraction Modeling (SpInt) module seeks to provide a collection of tools to study spatial interaction processes and analyze spatial interaction data.
 
 The [initial development](https://github.com/pysal/pysal/wiki/SpInt-Development) of the module was carried out as a Google Summer of Code
