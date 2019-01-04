@@ -45,7 +45,7 @@ install:
 script:
   - python setup.py sdist >/dev/null
   - python setup.py install
-  - nosetests --verbose --with-coverage --cover-package=spint;
+  - nosetests --verbose --with-doctest --with-coverage --cover-package=spint;
 
 notifications:
     email:
