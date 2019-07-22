@@ -38,9 +38,9 @@ install:
         echo 'testing pypi libpysal spreg spglm';
     else
         echo 'testing git libpysal spreg spglm';
-	pip install https://github.com/pysal/libpysal/archive/master.zip;
-	pip install https://github.com/pysal/spreg/archive/master.zip;
-	pip install https://github.com/pysal/spglm/archive/master.zip; 
+        pip install https://github.com/pysal/libpysal/archive/master.zip;
+        pip install https://github.com/pysal/spreg/archive/master.zip;
+        pip install https://github.com/pysal/spglm/archive/master.zip; 
    fi;
 
 script:
