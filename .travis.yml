@@ -2,25 +2,33 @@ language: python
 dist: xenial
 sudo: true
 branches:
-only:
-  - master
+  only:
+    - master
 python:
   - 3.6
   - 3.7
 
 env:
-  - PYSAL_PLUS=false
-  - PYSAL_PLUS=true
+  - PYSAL_PYPI=true #testing on dependencies libpysal, esda, mapcalssify on pypi
+  - PYSAL_PYPI=false
 
 matrix:
+<<<<<<< HEAD
     allow_failures:
         - python: 3.6
           env: PYSAL_PYPI=false
         - python: 3.7
           env: PYSAL_PYPI=false
+=======
+  allow_failures:
+      - python: 3.6
+        env: PYSAL_PYPI=false
+      - python: 3.7
+        env: PYSAL_PYPI=false
+>>>>>>> b4d7a36eb91f883b5263117ae5701530856e834f
 
 before_install:
-  - wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - chmod +x miniconda.sh
   - ./miniconda.sh -b -p ./miniconda
   - export PATH=`pwd`/miniconda/bin:$PATH
@@ -31,21 +39,24 @@ before_install:
 
 install:
   - conda install --yes pip
-  - conda install --yes --file requirements.txt;
-  - pip install https://github.com/pysal/splot/archive/master.zip
+  - conda install --yes --file requirements.txt
   - pip install -r requirements_tests.txt
   - if "$PYSAL_PYPI"; then
-        echo 'testing pypi libpysal spreg spglm' && pip install libpysal spreg spglm;
+        echo 'testing pypi libpysal spreg spglm';
     else
-        echo 'testing git libpysal spreg';
-        git clone https://github.com/pysal/libpysal.git; cd libpysal; pip install .; cd ../;
-        git clone https://github.com/pysal/spreg.git; cd spreg; pip install .; cd ../;
-        git clone https://github.com/pysal/spglm.git; cd spglm; pip install .; cd ../;
-    fi;
+        echo 'testing git libpysal spreg spglm';
+        git clone https://github.com/pysal/libpysal.git;
+        cd libpysal; pip install .; cd ../;
+        git clone https://github.com/pysal/spreg.git;
+        cd spreg; pip install .; cd ../;
+        git clone https://github.com/pysal/spglm.git;
+        cd spglm; pip install .; cd ../;
+   fi;
 
 script:
   - python setup.py sdist >/dev/null
   - python setup.py install
+  - python -c 'import libpysal; libpysal.examples.load_example("nyc_bikes")'
   - nosetests --verbose --with-doctest --with-coverage --cover-package=spint;
 
 notifications:

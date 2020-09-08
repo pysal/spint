@@ -866,7 +866,8 @@ class Attraction(BaseGravity):
     >>> import numpy as np
     >>> import libpysal
     >>> from spint.gravity import Attraction
-    >>> db = libpysal.io.open(libpysal.examples.get_path('nyc_bikes_ct.csv'))
+    >>> nyc_bikes = libpysal.examples.load_example('nyc_bikes')
+    >>> db = libpysal.io.open(nyc_bikes.get_path('nyc_bikes_ct.csv'))
     >>> cost = np.array(db.by_col('tripduration')).reshape((-1,1))
     >>> flows = np.array(db.by_col('count')).reshape((-1,1))
     >>> d = np.array(db.by_col('d_tract')).reshape((-1,1))
