@@ -31,7 +31,7 @@ before_install:
 
 install:
   - conda install --yes pip
-  - conda install --yes --file requirements.txt
+  - pip install -r  requirements.txt
   - pip install -r requirements_tests.txt
   - if "$PYSAL_PYPI"; then
         echo 'testing pypi libpysal spreg spglm';
