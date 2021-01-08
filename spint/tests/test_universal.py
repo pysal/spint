@@ -16,7 +16,7 @@ __author__ = 'Tyler Hoffman tylerhoff1@gmail.com'
 import unittest
 import numpy as np
 from scipy.stats import pearsonr
-from universal import Lenormand, Radiation, PWO
+from ..universal import Lenormand, Radiation, PWO
 np.random.seed(123456)
 
 
