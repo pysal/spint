@@ -535,6 +535,9 @@ class Gravity(BaseGravity):
                 results['tvalue' + str(cov)].append(model.tvalues[cov])
         return results
 
+        def predict(flows=self.f, origins=self.ov, destinations=self.dv, cost=self.c):
+            return 
+
 
 class Production(BaseGravity):
     """
@@ -748,6 +751,13 @@ class Production(BaseGravity):
                 results['tvalue' +
                         str(cov)].append(model.tvalues[offset + cov])
         return results
+
+        def predict(flows=self.f, destinations=self.d_vars, cost=self.cost, rebalance=True):
+            if rebalance:
+                # rebalance and compute Ai
+
+            # predict using self.params (something like this?)
+            return Ai**(-1)*Oi*(Wj**self.params[:-1]).sum()*cost**self.params[-1]
 
 
 class Attraction(BaseGravity):

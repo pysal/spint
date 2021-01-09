@@ -21,7 +21,6 @@ from abc import ABC, abstractmethod
 import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr
-import matplotlib.pyplot as plt
 
 
 class Universal(ABC):
