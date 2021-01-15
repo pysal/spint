@@ -292,25 +292,6 @@ def test():
     T_P = model.flowmat()
     print(pearsonr(T_P.flatten(), T_obs.flatten()))
 
-    # Plot!
-    fig, axes = plt.subplots(nrows=2, ncols=2)
-    pos = []
-    pos.append(axes[0, 0].matshow(T_L))
-    pos.append(axes[0, 1].matshow(T_R))
-    pos.append(axes[1, 0].matshow(T_P))
-    pos.append(axes[1, 1].matshow(T_obs))
-
-    fig.colorbar(pos[0], ax=axes[0, 0])
-    fig.colorbar(pos[1], ax=axes[0, 1])
-    fig.colorbar(pos[2], ax=axes[1, 0])
-    fig.colorbar(pos[3], ax=axes[1, 1])
-
-    axes[0, 0].set_title('Lenormand model')
-    axes[0, 1].set_title('Radiation model')
-    axes[1, 0].set_title('Population-weighted opportunities')
-    axes[1, 1].set_title('Observed')
-    plt.show()
-
 
 if __name__ == '__main__':
     test()
