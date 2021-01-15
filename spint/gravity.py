@@ -1,6 +1,6 @@
 # coding=utf-8
 """
- Wilsonian (1967) family of gravity-type spatial interaction models.
+ Wilsonian (1967) family of gravity-type spatial interaction models
 
 References
 ----------
