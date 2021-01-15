@@ -130,9 +130,9 @@ class TestUniversal(unittest.TestCase):
         T_L = model.flowmat()
         np.testing.assert_almost_equal(
             pearsonr(T_L.flatten(), T_obs.flatten()),
-            (-0.0724841, 0.5181216)
+            (-0.0728415, 0.5181216)
         )
-
+        
     def test_Radiation(self):
         outflows, inflows, locs, dists, T_obs = self.ready()
 
