@@ -1,5 +1,9 @@
 # coding=utf-8
 # 3. FlowAccessibility = Accessibility of flow taking existing destinations
+import numpy as np
+import pandas as pd
+from timeit import default_timer as timer
+import generate_dummy_accessibility as gd
 
 def AFED(flow_df, row_index, all_destinations=False): # AFAPF
     
@@ -29,8 +33,9 @@ def AFED(flow_df, row_index, all_destinations=False): # AFAPF
 
         
     # Create all destination flows 
-    x1 = pd.DataFrame({'D': np.array([D]*len(all_dest), dtype=object), 
-                       'dests':all_dest}).merge(flow_df, how='left', left_on=['D','dests'], right_on=['origin_ID','dest_ID'])
+    x1 = pd.DataFrame({'D': np.array([D]*len(all_dest), dtype=object
+                                    ), 'dests':all_dest}
+                     ).merge(flow_df, how='left', left_on=['D','dests'], right_on=['origin_ID','dest_ID'])
     
     # merge with the distances and masses 
     
@@ -41,3 +46,43 @@ def AFED(flow_df, row_index, all_destinations=False): # AFAPF
     A = (x1['dist']*x1['dest_mass']).sum()
 
     return A
+
+#-------------------------------------------------------------------------------------------------------------
+
+def Accessibility(flow_df, function, all_destinations=False):
+    start = timer()
+
+    A_ij = []
+
+    for idx in flow_df.index:
+       
+            if all_destinations: 
+                A = function(flow_df=flow_df, row_index=idx, all_destinations=True)
+            else:
+                A = function(flow_df=flow_df, row_index=idx, all_destinations=False)
+            A_ij.append(A)
+                
+    A_ij = pd.Series(A_ij)
+    end = timer()
+
+    print('time elapsed: ' + str(end - start))
+    return A_ij
+
+#-------------------------------------------------------------------------------------------------------------
+
+def test(function):
+    
+    # generate data
+    flow = gd.generate_dummy_flows()
+    
+    # get the right columns
+    flow = flow.loc[:,['origin_ID', 'destination_ID','distances', 'volume_in_unipartite','dest_masses','results_all=False']]
+    
+    # apply accessibility to all data
+    flow['acc_uni'] = Accessibility(flow_df = flow, all_destinations=False, function = function)
+    
+    # check the results
+    if (flow['results_all=False'] == flow['acc_uni']).all() == True:
+        print('All good to go!')
+    else: 
+        print('Ay caramba, something is not working correctly.')
