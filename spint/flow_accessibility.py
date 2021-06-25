@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 from timeit import default_timer as timer
-import generate_dummy_accessibility as gd
+from generate_dummy_accessibility import generate_dummy_flows
 
 def AFED(flow_df, row_index, all_destinations=False): # AFAPF
     
@@ -73,7 +73,7 @@ def Accessibility(flow_df, function, all_destinations=False):
 def test(function):
     
     # generate data
-    flow = gd.generate_dummy_flows()
+    flow = generate_dummy_flows()
     
     # get the right columns
     flow = flow.loc[:,['origin_ID', 'destination_ID','distances', 'volume_in_unipartite','dest_masses','results_all=False']]
