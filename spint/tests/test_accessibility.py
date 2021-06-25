@@ -10,8 +10,8 @@ __author__ = 'Lenka Hasova haska.lenka@gmail.com'
 import unittest
 import numpy as np
 from ..generate_dummy_accessibility import generate_dummy_flows
-from ..FlowAccessibility import Accessibility
-from ..FlowAccessibility import AFED
+from ..flow_accessibility import Accessibility
+from ..flow_accessibility import AFED
 
 
 class AccessibilityTest(unittest.TestCase):
