@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 from timeit import default_timer as timer
-from generate_dummy_accessibility import generate_dummy_flows
+from .generate_dummy_accessibility import generate_dummy_flows
 
 def AFED(flow_df, row_index, all_destinations=False): # AFAPF
     
