@@ -38,15 +38,15 @@ def generate_dummy_flows():
     all_flow['distances'] = [0,8,2,5,5,
                           8,0,10,7,4,
                           2,10,0,6,9,
-                          5,7,6,0,9,
+                          5,7,6,0,2,
                           5,4,9,2,0]
 
     all_flow = all_flow.merge(masses, how = 'left', left_on = 'destination_ID', right_on = 'nodes')
 
-    all_flow['results_all=False'] = [500, 510, 730, 580, 190,
-                                     400, 890, 750, 750, 360, 
+    all_flow['results_all=False'] = [500, 510, 730, 230, 190,
+                                     400, 890, 750, 400, 360,
                                      150, 690, 300, 300, 360,
-                                     350, 780, 670, 880, 430,
+                                     350, 780, 670, 530, 430,
                                      230, 690, 400, 370, 400]
     
     return all_flow

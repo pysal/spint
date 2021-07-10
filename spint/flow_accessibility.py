@@ -5,7 +5,7 @@ import pandas as pd
 from timeit import default_timer as timer
 from .generate_dummy_accessibility import generate_dummy_flows
 
-def AFED(flow_df, row_index, all_destinations=False): # AFAPF
+def AFED(flow_df, row_index, all_destinations=False): 
     
     # rename teh columns so we can call them 
     flow_df = flow_df.rename(columns = {flow_df.columns[0]:'origin_ID', 
@@ -13,7 +13,8 @@ def AFED(flow_df, row_index, all_destinations=False): # AFAPF
                                             flow_df.columns[2]:'dist', 
                                             flow_df.columns[3]:'weight', 
                                             flow_df.columns[4]:'dest_mass'})
-    # define O and D for each row the variables
+
+        # define O and D for each row the variables
     D = flow_df['dest_ID'][row_index]
     O = flow_df['origin_ID'][row_index]
     
