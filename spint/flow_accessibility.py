@@ -2,74 +2,123 @@
 # 3. FlowAccessibility = Accessibility of flow taking existing destinations
 import numpy as np
 import pandas as pd
+import itertools
 from timeit import default_timer as timer
-from .generate_dummy_accessibility import generate_dummy_flows
 
-def AFED(flow_df, row_index, all_destinations=False): 
+def generate_dummy_flows():
+    nodes = ['A','B','C','D','E']
+    destination_masses = [60,10,10,30,50]
+
+    all_flow = pd.DataFrame( list(itertools.product(nodes,nodes
+                                               )
+                             )
+                       ).rename(columns = {0:'origin_ID', 1:'destination_ID'
+                                          }
+                               )
+
+    masses = {'nodes': nodes,'dest_masses': destination_masses
+         }
+
+    masses = pd.DataFrame({'nodes': nodes,'dest_masses': destination_masses
+                      }, columns = ['nodes','dest_masses'
+                                   ]
+                     )
+
+    all_flow['volume_in_unipartite'] = [10,10,10,10,10,
+                                    10,0,0,10,10,
+                                    10,0,0,10,0,
+                                    10,10,10,0,10,
+                                    10,10,0,10,10]
+
+    all_flow['volume_in_bipirtate'] = [0,0,10,10,10,
+                          0,0,0,10,10,
+                          0,0,0,0,0,
+                          0,0,0,0,0,
+                          0,0,0,0,0]
+
+    all_flow['distances'] = [0,8,2,5,5,
+                          8,0,10,7,4,
+                          2,10,0,6,9,
+                          5,7,6,0,2,
+                          5,4,9,2,0]
+
+    all_flow = all_flow.merge(masses, how = 'left', left_on = 'destination_ID', right_on = 'nodes')
+
+    all_flow['results_all=False'] = [500, 510, 730, 230, 190,
+                                     400, 890, 750, 400, 360,
+                                     150, 690, 300, 300, 360,
+                                     350, 780, 670, 530, 430,
+                                     230, 690, 400, 370, 400]
     
-    # rename teh columns so we can call them 
+    return all_flow
+
+
+#-------------------------------------------------------------------------------------------------------------
+
+
+
+def Accessibility(flow_df, all_destinations=False):
+    start = timer()
+     # rename teh columns so we can call them 
     flow_df = flow_df.rename(columns = {flow_df.columns[0]:'origin_ID', 
                                             flow_df.columns[1]:'dest_ID', 
                                             flow_df.columns[2]:'dist', 
                                             flow_df.columns[3]:'weight', 
                                             flow_df.columns[4]:'dest_mass'})
+    
+    flow_df['dist'] = flow_df['dist'].astype(int)
+    flow_df['weight'] = flow_df['weight'].astype(int)
+    flow_df['dest_mass'] = flow_df['dest_mass'].astype(int)
+    # create binary for weight
+    flow_df['v_bin'] = 1
+    flow_df.loc[flow_df['weight'].isna(),'v_bin'] = 0
+    flow_df.loc[flow_df['weight'] <= 0,'v_bin'] = 0
+    
+    # define the base matrices
+    distance = np.array(flow_df.pivot_table(values='dist', index='origin_ID', columns="dest_ID"))
+    mass = np.array(flow_df.pivot_table(values='dest_mass', columns="origin_ID", index='dest_ID'))
+    exists = np.array(flow_df.pivot_table(values='v_bin', index='dest_ID', columns="origin_ID"))
+    
+    # define the base 3d array
+    nrows= len(exists)
+    ones = np.ones((nrows,len(flow_df.origin_ID.unique()),len(flow_df.dest_ID.unique())))
+    
+    # define the identity array
+    idn = np.identity(nrows) 
+    idn = np.where((idn==1), 0, 1)
+    idn = np.concatenate(nrows * [idn.ravel()], axis = 0).reshape(nrows,nrows,nrows).T
 
-        # define O and D for each row the variables
-    D = flow_df['dest_ID'][row_index]
-    O = flow_df['origin_ID'][row_index]
+    # multiply the distance by mass
+    ard = np.array(distance)*np.array(mass)
     
+    # combine all into and calculate the output
     
-    # get the list of possible destinations 
     if all_destinations:
-         all_dest = (flow_df.query('origin_ID == @O')
-                ['dest_ID']
-                .unique()
-               )
-    else:
-        all_dest = (flow_df.query('origin_ID == @O')
-                .query('weight > 0')
-                ['dest_ID']
-                .unique()
-               )
-
+        output = np.array(idn) * (np.array(nrows * [ard]
+                                              )
+                                     )
         
-    # Create all destination flows 
-    x1 = pd.DataFrame({'D': np.array([D]*len(all_dest), dtype=object
-                                    ), 'dests':all_dest}
-                     ).merge(flow_df, how='left', left_on=['D','dests'], right_on=['origin_ID','dest_ID'])
+    else:
+        output = (np.concatenate(nrows * [exists], axis = 0
+                                ).reshape(nrows,nrows,nrows
+                                         ).T 
+                 ) * np.array(idn) * (np.array(nrows * [ard]
+                                              )
+                                     )
     
-    # merge with the distances and masses 
+    # get the sum and covert to series
+    g = pd.DataFrame((
+        np.sum(output,axis = 1
+                           )  ).reshape(1,len(flow_df)
+                                                    ).T
+                    )
     
-    # Delete the flow to origin
-    x1 = x1[~x1.dests.isin(list(O))]    
-
-    # calculate the accessibility
-    A = (x1['dist']*x1['dest_mass']).sum()
-
-    return A
-
-#-------------------------------------------------------------------------------------------------------------
-
-def Accessibility(flow_df, function, all_destinations=False):
-    start = timer()
-
-    A_ij = []
-
-    for idx in flow_df.index:
-       
-            if all_destinations: 
-                A = function(flow_df=flow_df, row_index=idx, all_destinations=True)
-            else:
-                A = function(flow_df=flow_df, row_index=idx, all_destinations=False)
-            A_ij.append(A)
-                
-    A_ij = pd.Series(A_ij)
     end = timer()
-
     print('time elapsed: ' + str(end - start))
-    return A_ij
+    return g[0]
 
 #-------------------------------------------------------------------------------------------------------------
+
 
 def test(function):
     
@@ -80,7 +129,7 @@ def test(function):
     flow = flow.loc[:,['origin_ID', 'destination_ID','distances', 'volume_in_unipartite','dest_masses','results_all=False']]
     
     # apply accessibility to all data
-    flow['acc_uni'] = Accessibility(flow_df = flow, all_destinations=False, function = function)
+    flow['acc_uni'] = function(flow_df = flow, all_destinations=False)
     
     # check the results
     if (flow['results_all=False'] == flow['acc_uni']).all() == True:
