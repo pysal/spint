@@ -9,7 +9,7 @@ __author__ = 'Lenka Hasova haska.lenka@gmail.com'
 
 import unittest
 import numpy as np
-from ..flow_accessibility import generate_dummy_flows
+from ..flow_accessibility import _generate_dummy_flows
 from ..flow_accessibility import Accessibility
 
 
