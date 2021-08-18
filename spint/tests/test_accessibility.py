@@ -17,7 +17,7 @@ from ..flow_accessibility import Accessibility
 class AccessibilityTest(unittest.TestCase):
     
     def test_accessibility(self):
-        flow = generate_dummy_flows()
+        flow = _generate_dummy_flows()
         flow = flow.loc[:,['origin_ID', 'destination_ID','distances', 'volume_in_unipartite','dest_masses','results_all=False']]
         flow['acc_uni'] = function(origins = flow['origin_ID'], destinations = flow['destination_ID'], distances = flow['distances'], weights = flow['volume_in_unipartite'], masses = flow['dest_masses'], all_destinations=False)
         
