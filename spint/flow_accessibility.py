@@ -3,7 +3,8 @@
 import numpy as np
 import pandas as pd
 import itertools
-from timeit import default_timer as timer
+
+#-------------------------------------------------------------------------------------------------------------
 
 def _generate_dummy_flows():
     nodes = ['A','B','C','D','E']
