@@ -21,7 +21,7 @@ class AccessibilityTest(unittest.TestCase):
         flow = flow.loc[:,['origin_ID', 'destination_ID','distances', 'volume_in_unipartite','dest_masses','results_all=False']]
         flow['acc_uni'] = Accessibility(origins = flow['origin_ID'], destinations = flow['destination_ID'], distances = flow['distances'], weights = flow['volume_in_unipartite'], masses = flow['dest_masses'], all_destinations=False)
         
-        self.assertEqual(flow['results_all=False'].all(), flow['acc_uni'].all())
+        np.testing.assert_array_equal(flow['results_all=False'].all(), flow['acc_uni'].all())
 
 if __name__ == '__main__':
     unittest.main()
