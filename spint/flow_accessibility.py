@@ -5,7 +5,7 @@ import pandas as pd
 import itertools
 from timeit import default_timer as timer
 
-def generate_dummy_flows():
+def _generate_dummy_flows():
     nodes = ['A','B','C','D','E']
     destination_masses = [60,10,10,30,50]
 
@@ -57,82 +57,59 @@ def generate_dummy_flows():
 
 
 
-def Accessibility(flow_df, all_destinations=False):
-    start = timer()
-     # rename teh columns so we can call them 
-    flow_df = flow_df.rename(columns = {flow_df.columns[0]:'origin_ID', 
-                                            flow_df.columns[1]:'dest_ID', 
-                                            flow_df.columns[2]:'dist', 
-                                            flow_df.columns[3]:'weight', 
-                                            flow_df.columns[4]:'dest_mass'})
+def Accessibility(origins, destinations, distances, weights, masses, all_destinations=False):
     
-    flow_df['dist'] = flow_df['dist'].astype(int)
-    flow_df['weight'] = flow_df['weight'].astype(int)
-    flow_df['dest_mass'] = flow_df['dest_mass'].astype(int)
+    # convert numbers to integers
+    distances = np.array(distances.astype(int))
+    weights = np.array(weights.astype(int))
+    masses = np.array(masses.astype(int))
+    origins = np.array(origins)
+    
+    # define error
+    if len(distances) != len(weights) != len(masses) != len(origins):
+        raise ValueError("One of the input array is different length then the others, but they should all be the same length. See notebook example if you are unsure what the input should look like ")
+    
+    # define number of rows
+    nrows= len(origins)
+    uniques = len(np.unique(np.array(origins)))
+    
     # create binary for weight
-    flow_df['v_bin'] = 1
-    flow_df.loc[flow_df['weight'].isna(),'v_bin'] = 0
-    flow_df.loc[flow_df['weight'] <= 0,'v_bin'] = 0
+    v_bin =  np.ones(nrows)
+    weights[np.isnan(weights)] = 0
+    v_bin[weights <= 0] = 0
     
     # define the base matrices
-    distance = np.array(flow_df.pivot_table(values='dist', index='origin_ID', columns="dest_ID"))
-    mass = np.array(flow_df.pivot_table(values='dest_mass', columns="origin_ID", index='dest_ID'))
-    exists = np.array(flow_df.pivot_table(values='v_bin', index='dest_ID', columns="origin_ID"))
+    distance = distances.reshape(uniques,uniques)
+    mass =masses.reshape(uniques,uniques).T
+    exists = v_bin.reshape(uniques,uniques)
     
-    # define the base 3d array
-    nrows= len(exists)
-    ones = np.ones((nrows,len(flow_df.origin_ID.unique()),len(flow_df.dest_ID.unique())))
-    
+      
     # define the identity array
-    idn = np.identity(nrows) 
+    idn = np.identity(uniques) 
     idn = np.where((idn==1), 0, 1)
-    idn = np.concatenate(nrows * [idn.ravel()], axis = 0).reshape(nrows,nrows,nrows).T
+    idn = np.concatenate(uniques * [idn.ravel()], axis = 0
+                        ).reshape(uniques,uniques,uniques
+                                 ).T
 
     # multiply the distance by mass
-    ard = np.array(distance)*np.array(mass)
+    dm = distance * mass
     
-    # combine all into and calculate the output
-    
+    # combine all matrices for either all or existing destinations
     if all_destinations:
-        output = np.array(idn) * (np.array(nrows * [ard]
-                                              )
-                                     )
+        output = idn * (nrows * [dm])
         
     else:
-        output = (np.concatenate(nrows * [exists], axis = 0
-                                ).reshape(nrows,nrows,nrows
-                                         ).T 
-                 ) * np.array(idn) * (np.array(nrows * [ard]
-                                              )
-                                     )
+        output = (np.concatenate(uniques * [exists], axis = 0
+                                ).reshape(uniques,uniques,uniques
+                                         ).T
+                 ) * idn * (uniques * [dm]
+                           )
     
     # get the sum and covert to series
-    g = pd.DataFrame((
-        np.sum(output,axis = 1
-                           )  ).reshape(1,len(flow_df)
-                                                    ).T
-                    )
+    output = (np.sum(output,axis = 1
+                    ) 
+             ).reshape(nrows
+                      ).T
     
-    end = timer()
-    print('time elapsed: ' + str(end - start))
-    return g[0]
-
-#-------------------------------------------------------------------------------------------------------------
-
-
-def test(function):
     
-    # generate data
-    flow = generate_dummy_flows()
-    
-    # get the right columns
-    flow = flow.loc[:,['origin_ID', 'destination_ID','distances', 'volume_in_unipartite','dest_masses','results_all=False']]
-    
-    # apply accessibility to all data
-    flow['acc_uni'] = function(flow_df = flow, all_destinations=False)
-    
-    # check the results
-    if (flow['results_all=False'] == flow['acc_uni']).all() == True:
-        print('All good to go!')
-    else: 
-        print('Ay caramba, something is not working correctly.')
+    return output
