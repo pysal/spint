@@ -58,21 +58,21 @@ def _generate_dummy_flows():
 
 
 
-def Accessibility(origins, destinations, distances, weights, masses, all_destinations=False):
+def Accessibility(nodes, distances, weights, masses, all_destinations=False):
     
     # convert numbers to integers
     distances = np.array(distances.astype(int))
     weights = np.array(weights.astype(int))
     masses = np.array(masses.astype(int))
-    origins = np.array(origins)
+    nodes = np.array(nodes)
     
     # define error
-    if len(distances) != len(weights) != len(masses) != len(origins):
+    if len(distances) != len(weights) != len(masses) != len(nodes):
         raise ValueError("One of the input array is different length then the others, but they should all be the same length. See notebook example if you are unsure what the input should look like ")
     
     # define number of rows
-    nrows= len(origins)
-    uniques = len(np.unique(np.array(origins)))
+    nrows= len(nodes)
+    uniques = len(np.unique(np.array(nodes)))
     
     # create binary for weight
     v_bin =  np.ones(nrows)
