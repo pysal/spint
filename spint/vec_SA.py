@@ -161,8 +161,8 @@ class VecMoran:
     >>> vmd = VecMoran(vecs, wd, focus='destination', rand='B')
     >>> vmo.I
     0.6459445943670211
-    >>> vmo.p_z_sim
-    0.05087923006558356
+    >>> round(vmo.p_z_sim, 14)
+    0.05087923006558
     >>> vmd.I
     -0.7646036950223406
     >>> vmd.p_z_sim

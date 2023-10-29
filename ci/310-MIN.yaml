@@ -4,7 +4,7 @@ channels:
 dependencies:
   - python=3.10
   # required
-  - libpysal=4.6
+  - libpysal=4.7
   - numpy=1.23
   - scipy=1.8
   - spglm=1.1
