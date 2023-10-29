@@ -53,6 +53,10 @@
            environment-file: ${{ matrix.environment-file }}
            micromamba-version: 'latest'
 
+       - name: fetch libpysal example data
+         run: |
+           python -c 'from libpysal.examples import load_example as ex; ex("nyc_bikes")'
+
        - name: run tests
          run: |
            pytest spint \
