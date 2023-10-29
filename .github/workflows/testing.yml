@@ -1,0 +1,74 @@
+
+ name: Continuous Integration
+ 
+ on:
+   push:
+     branches:
+       - '*'
+   pull_request:
+     branches:
+       - '*'
+   schedule:
+       - cron: '59 23 * * *'
+   workflow_dispatch:
+     inputs:
+       version:
+         description: Manual Unittest Run
+         default: test
+         required: false
+
+ jobs:
+   testing:
+     name: ${{ matrix.os }}, ${{ matrix.environment-file }}
+     runs-on: ${{ matrix.os }}
+     timeout-minutes: 30
+     strategy:
+       matrix:
+         os: [ubuntu-latest]
+         environment-file:
+           - ci/310-MIN.yaml
+           - ci/311.yaml
+           - ci/312.yaml
+           - ci/312-DEV.yaml
+         include:
+           - environment-file: ci/312.yaml
+             os: macos-latest
+           - environment-file: ci/312.yaml
+             os: windows-latest
+       fail-fast: false
+
+     defaults:
+       run:
+         shell: bash -l {0}
+     
+     steps:
+       - name: checkout repo
+         uses: actions/checkout@v4
+         with:
+           fetch-depth: 0 # Fetch all history for all branches and tags.
+       
+       - name: setup micromamba
+         uses: mamba-org/setup-micromamba@v1
+         with:
+           environment-file: ${{ matrix.environment-file }}
+           micromamba-version: 'latest'
+
+       - name: run tests
+         run: |
+           pytest spint \
+           -v \
+           -r a \
+           -n auto \
+           --color yes \
+           --cov spint \
+           --cov-report xml \
+           --cov-report term-missing \
+           --cov-append \
+           --doctest-modules
+       
+       #- name: codecov
+       #  uses: codecov/codecov-action@v3
+       #  with:
+       #    token: ${{ secrets.CODECOV_TOKEN }}
+       #    file: ./coverage.xml
+       #    name: spint-codecov

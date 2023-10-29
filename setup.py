@@ -35,7 +35,7 @@ def setup_package():
           url='https://github.com/pysal/spint',  # github repo
           maintainer='Taylor M. Oshan',
           maintainer_email='tayoshan@gmail.com',
-          python_requires='>3.5',
+          python_requires='>3.10',
           test_suite='nose.collector',
           tests_require=['nose'],
           keywords='spatial statistics',
@@ -48,8 +48,7 @@ def setup_package():
               'Topic :: Scientific/Engineering :: GIS',
               'License :: OSI Approved :: BSD License',
               'Programming Language :: Python',
-              'Programming Language :: Python :: 3.6',
-              'Programming Language :: Python :: 3.7'
+              'Programming Language :: Python :: 3',
           ],
           license='3-Clause BSD',
           packages=find_packages(),
