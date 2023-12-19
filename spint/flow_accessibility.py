@@ -31,7 +31,7 @@ def _generate_dummy_flows():
                                     10,10,10,0,10,
                                     10,10,0,10,10]
 
-    all_flow['volume_in_bipirtate'] = [0,0,10,10,10,
+    all_flow['volume_in_bipartite'] = [0,0,10,10,10,
                           0,0,0,10,10,
                           0,0,0,0,0,
                           0,0,0,0,0,
@@ -58,7 +58,7 @@ def _generate_dummy_flows():
 
 
 
-def Accessibility(nodes, distances, weights, masses, all_destinations=False):
+def Accessibility(nodes, distances, weights, masses, all_destinations=False, is_bipartite = False):
     
     # convert numbers to integers
     distances = np.array(distances.astype(int))
@@ -69,6 +69,8 @@ def Accessibility(nodes, distances, weights, masses, all_destinations=False):
     # define error
     if len(distances) != len(weights) != len(masses) != len(nodes):
         raise ValueError("One of the input array is different length then the others, but they should all be the same length. See notebook example if you are unsure what the input should look like ")
+    if all_destinations & is_bipartite:
+        raise ValueError("This option has not been implemented yet")
     
     # define number of rows
     nrows= len(nodes)
@@ -82,8 +84,6 @@ def Accessibility(nodes, distances, weights, masses, all_destinations=False):
     # define the base matrices
     distance = distances.reshape(uniques,uniques)
     mass =masses.reshape(uniques,uniques).T
-    exists = v_bin.reshape(uniques,uniques)
-    
       
     # define the identity array
     idn = np.identity(uniques) 
@@ -95,11 +95,19 @@ def Accessibility(nodes, distances, weights, masses, all_destinations=False):
     # multiply the distance by mass
     dm = distance * mass
     
-    # combine all matrices for either all or existing destinations
-    if all_destinations:
+     # combine all matrices for either all or existing destinations
+    if is_bipartite:
+        exists = v_bin.reshape(uniques,uniques).T
+        output = (np.concatenate(uniques * [exists], axis = 0
+                                ).reshape(uniques,uniques,uniques
+                                         ).T
+                 ) * idn * (uniques * [dm]
+                           )
+    elif all_destinations:
+        exists = v_bin.reshape(uniques,uniques)
         output = idn * (nrows * [dm])
-        
     else:
+        exists = v_bin.reshape(uniques,uniques)
         output = (np.concatenate(uniques * [exists], axis = 0
                                 ).reshape(uniques,uniques,uniques
                                          ).T
