@@ -58,23 +58,52 @@ def _generate_dummy_flows():
 
 
 
-def Accessibility(nodes, distances, weights, masses, all_destinations=False, is_bipartite = False):
+def Accessibility(dest_nodes, distances, weights, masses, all_destinations=False, is_bipartite = False):
+
+    """
+    Function to calculate Accessibility for Competing Destination model, given a COMPLETE origin-destination edgelist. 
+    See an example notebook to see how to construct the COMPLETE origin-destination edgelist from your data.
+
+    Parameters
+    ----------
+    dest_nodes      : array of strings or numeric codes
+                      n x 1; the DESTINATION column in the origin-destination edgelist 
+
+    distances       : array of numbers
+                      n x 1; the distance column in the origin-destination edgelist 
+
+    weights         : array of numbers
+                      n x 1; the flow volume column in the origin-destination edgelist 
+
+    masses          : array of numbers
+                      n x 1; the DESTINATION masses column in the origin-destination edgelist
+
+    all_destinations: bolean, Deafult is False
+                      True to consider all the existing destinations as a competing destinations, 
+                      even those where flows does not exist in the data.
+                      False to consider only those destinations as a competing destinations, which exists in the data. 
+                      This option is only available for flow data that can be represented as unipartite graph.
+    is_bipartite    : bolean, Deafult is False
+                      True to predefine the flow graph as bipartite: one where origins and destinations are separate 
+                      entities and where interaction can happen only in one direction, from origin to destination.
+                      False to keep assumption for regular unipartite graph.
+"""
     
     # convert numbers to integers
     distances = np.array(distances.astype(int))
     weights = np.array(weights.astype(int))
     masses = np.array(masses.astype(int))
-    nodes = np.array(nodes)
+    dest_nodes = np.array(dest_nodes.astype(str))
     
     # define error
-    if len(distances) != len(weights) != len(masses) != len(nodes):
+    if len(distances) != len(weights) != len(masses) != len(dest_nodes):
         raise ValueError("One of the input array is different length then the others, but they should all be the same length. See notebook example if you are unsure what the input should look like ")
     if all_destinations & is_bipartite:
         raise ValueError("This option has not been implemented yet")
     
     # define number of rows
-    nrows= len(nodes)
-    uniques = len(np.unique(np.array(nodes)))
+    nrows= len(dest_nodes)
+    uniques = len(np.unique(np.array(dest_nodes)))
     
     # create binary for weight
     v_bin =  np.ones(nrows)
