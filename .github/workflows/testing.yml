@@ -26,16 +26,19 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         environment-file:
-          - ci/310-min.yaml
+          - ci/310-oldest.yaml
           - ci/311-latest.yaml
           - ci/312-latest.yaml
           - ci/312-dev.yaml
+          - ci/313-latest.yaml
+          - ci/314-latest.yaml
+          - ci/314-dev.yaml
         include:
-          - environment-file: ci/312-latest.yaml
+          - environment-file: ci/314-latest.yaml
             os: macos-15-intel # Intel
-          - environment-file: ci/312-latest.yaml
+          - environment-file: ci/314-latest.yaml
             os: macos-latest # Apple Silicon
-          - environment-file: ci/312-latest.yaml
+          - environment-file: ci/314-latest.yaml
             os: windows-latest
       fail-fast: false
 
