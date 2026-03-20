@@ -147,7 +147,7 @@ class VecMoran:
     #randomization technique A
     >>> vmo = VecMoran(vecs, wo, focus='origin', rand='A')
     >>> vmd = VecMoran(vecs, wd, focus='destination', rand='A')
-    >>> np.round(vmo.I, 10)
+    >>> np.round(vmo.I, 10).astype(float)
     np.float64(0.6459445944)
     >>> np.round(vmo.p_z_sim, 10)
     np.float64(0.0389865073)

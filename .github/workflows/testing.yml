@@ -70,8 +70,16 @@ jobs:
           --cov spint \
           --cov-report xml \
           --cov-report term-missing \
-          --cov-append \
-          --doctest-modules
+          --cov-append
+
+      - name: run doctests
+        if: ${{ !endsWith(github.ref, 'oldest.yaml') }}
+        run: |
+          pytest --doctest-modules \
+          -v \
+          -r a \
+          -n auto \
+          --color yes
 
       #- name: codecov
       #  uses: codecov/codecov-action@v5
