@@ -32,15 +32,15 @@ class TestVecMoran(unittest.TestCase):
             binary=False)
         np.random.seed(1)
         vmo = VecMoran(self.vecs, wo, focus='origin', rand='A')
-        self.assertAlmostEquals(vmo.I, 0.645944594367)
-        self.assertAlmostEquals(vmo.p_z_sim, 0.03898650733809228)
+        self.assertAlmostEqual(vmo.I, 0.645944594367)
+        self.assertAlmostEqual(vmo.p_z_sim, 0.03898650733809228)
 
     def test_dest_focused_A(self):
         wd = DistanceBand(self.dests, threshold=9999, alpha=-1.5, binary=False)
         np.random.seed(1)
         vmd = VecMoran(self.vecs, wd, focus='destination', rand='A')
-        self.assertAlmostEquals(vmd.I, -0.764603695022)
-        self.assertAlmostEquals(vmd.p_z_sim, 0.149472673677)
+        self.assertAlmostEqual(vmd.I, -0.764603695022)
+        self.assertAlmostEqual(vmd.p_z_sim, 0.149472673677)
 
     def test_origin_focused_B(self):
         wo = DistanceBand(
@@ -50,15 +50,15 @@ class TestVecMoran(unittest.TestCase):
             binary=False)
         np.random.seed(1)
         vmo = VecMoran(self.vecs, wo, focus='origin', rand='B')
-        self.assertAlmostEquals(vmo.I, 0.645944594367)
-        self.assertAlmostEquals(vmo.p_z_sim, 0.02944612633233532)
+        self.assertAlmostEqual(vmo.I, 0.645944594367)
+        self.assertAlmostEqual(vmo.p_z_sim, 0.02944612633233532)
 
     def test_dest_focused_B(self):
         wd = DistanceBand(self.dests, threshold=9999, alpha=-1.5, binary=False)
         np.random.seed(1)
         vmd = VecMoran(self.vecs, wd, focus='destination', rand='B')
-        self.assertAlmostEquals(vmd.I, -0.764603695022)
-        self.assertAlmostEquals(vmd.p_z_sim, 0.12411761124197379)
+        self.assertAlmostEqual(vmd.I, -0.764603695022)
+        self.assertAlmostEqual(vmd.p_z_sim, 0.12411761124197379)
 
 
 if __name__ == '__main__':

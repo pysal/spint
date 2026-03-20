@@ -659,12 +659,12 @@ class TestGravity(unittest.TestCase):
                                     114.87900692,
                                     100.58000293,
                                     199.99352826])
-        self.assertAlmostEquals(model.D2, 0.88713874099960177)
-        self.assertAlmostEquals(model.adj_D2, 0.88215956780840776)
-        self.assertAlmostEquals(model.SSI, 0.72706171189789603)
-        self.assertAlmostEquals(model.pseudoR2, 0.88421303645743465)
-        self.assertAlmostEquals(model.adj_pseudoR2, 0.88416760104130376)
-        self.assertAlmostEquals(model.SRMSE, 0.62063116008447083)
+        self.assertAlmostEqual(model.D2, 0.88713874099960177)
+        self.assertAlmostEqual(model.adj_D2, 0.88215956780840776)
+        self.assertAlmostEqual(model.SSI, 0.72706171189789603)
+        self.assertAlmostEqual(model.pseudoR2, 0.88421303645743465)
+        self.assertAlmostEqual(model.adj_pseudoR2, 0.88416760104130376)
+        self.assertAlmostEqual(model.SRMSE, 0.62063116008447083)
 
     def test_local_Gravity(self):
         model = Gravity(self.f, self.o_var, self.d_var, self.dij, 'exp')
@@ -799,12 +799,12 @@ class TestGravity(unittest.TestCase):
                                     4.04624989e+02, 5.02255240e+01, 3.06563409e+02,
                                     2.32354948e+02, 1.74615053e+02, 2.01734215e+02,
                                     3.00280455e+02, 2.77258060e+02, 6.40968342e+02])
-        self.assertAlmostEquals(model.D2, 0.912931356874)
-        self.assertAlmostEquals(model.adj_D2, 0.89865780882)
-        self.assertAlmostEquals(model.SSI, 0.740619203383)
-        self.assertAlmostEquals(model.pseudoR2, 0.909920590111)
-        self.assertAlmostEquals(model.adj_pseudoR2, 0.909795642717)
-        self.assertAlmostEquals(model.SRMSE, 0.46622685091043831)
+        self.assertAlmostEqual(model.D2, 0.912931356874)
+        self.assertAlmostEqual(model.adj_D2, 0.89865780882)
+        self.assertAlmostEqual(model.SSI, 0.740619203383)
+        self.assertAlmostEqual(model.pseudoR2, 0.909920590111)
+        self.assertAlmostEqual(model.adj_pseudoR2, 0.909795642717)
+        self.assertAlmostEqual(model.SRMSE, 0.46622685091043831)
 
     def test_local_Production(self):
         model = Production(self.f, self.o, self.d_var, self.dij, 'exp')
@@ -948,12 +948,12 @@ class TestGravity(unittest.TestCase):
                                     5.49332748e+02, 1.22952888e+01, 8.90162551e+01,
                                     8.85260032e+01, 5.53842615e+01, 5.60455225e+01,
                                     9.23759900e+01, 8.37976212e+01, 3.66824277e+02])
-        self.assertAlmostEquals(model.D2, .910690541438)
-        self.assertAlmostEquals(model.adj_D2, .896049646592)
-        self.assertAlmostEquals(model.SSI, .750634498293)
-        self.assertAlmostEquals(model.pseudoR2, .90768716507)
-        self.assertAlmostEquals(model.adj_pseudoR2, .907562217676)
-        self.assertAlmostEquals(model.SRMSE, 0.59478477816884223)
+        self.assertAlmostEqual(model.D2, .910690541438)
+        self.assertAlmostEqual(model.adj_D2, .896049646592)
+        self.assertAlmostEqual(model.SSI, .750634498293)
+        self.assertAlmostEqual(model.pseudoR2, .90768716507)
+        self.assertAlmostEqual(model.adj_pseudoR2, .907562217676)
+        self.assertAlmostEqual(model.SRMSE, 0.59478477816884223)
 
     def test_local_Attraction(self):
         model = Attraction(self.f, self.d, self.o_var, self.dij, 'exp')
@@ -1169,12 +1169,12 @@ class TestGravity(unittest.TestCase):
                                     9.85596546e+02, 2.44225078e+01, 1.64157859e+02,
                                     2.28909306e+02, 1.42362371e+02, 1.31485029e+02,
                                     2.31461478e+02, 2.12717926e+02, 1.04848355e+03])
-        self.assertAlmostEquals(model.D2, .946661920897)
-        self.assertAlmostEquals(model.adj_D2, .929870303401)
-        self.assertAlmostEquals(model.SSI, .811852110904)
-        self.assertAlmostEquals(model.pseudoR2, .943539912198)
-        self.assertAlmostEquals(model.adj_pseudoR2, .943335452826)
-        self.assertAlmostEquals(model.SRMSE, 0.37925654532618808)
+        self.assertAlmostEqual(model.D2, .946661920897)
+        self.assertAlmostEqual(model.adj_D2, .929870303401)
+        self.assertAlmostEqual(model.SSI, .811852110904)
+        self.assertAlmostEqual(model.pseudoR2, .943539912198)
+        self.assertAlmostEqual(model.adj_pseudoR2, .943335452826)
+        self.assertAlmostEqual(model.SRMSE, 0.37925654532618808)
 
 
 if __name__ == '__main__':
