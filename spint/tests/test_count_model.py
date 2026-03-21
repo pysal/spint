@@ -10,9 +10,11 @@ as count data. Results are verified using corresponding functions in R.
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
 import unittest
-import numpy as np
+
 import libpysal
+import numpy as np
 from spglm.family import Poisson
+
 from ..count_model import CountModel
 
 

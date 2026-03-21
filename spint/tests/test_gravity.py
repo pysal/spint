@@ -11,10 +11,12 @@ started in spatial interaction modelling (Working Paper No. 184). UCL: Citeseer.
 
 """
 
-import unittest
 import math
+import unittest
+
 import numpy as np
-from ..gravity import BaseGravity, Gravity, Production, Attraction, Doubly
+
+from ..gravity import Attraction, BaseGravity, Doubly, Gravity, Production
 
 
 class TestGravity(unittest.TestCase):
