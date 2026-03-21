@@ -66,13 +66,12 @@ class CountModel(object):
         self.constant = constant
 
     def _check_counts(self, y):
-        if (y.dtype == 'int64') | (y.dtype == 'int32'):
+        if (y.dtype == "int64") | (y.dtype == "int32"):
             return y
         else:
-            raise TypeError(
-                'Dependent variable (y) must be composed of integers')
+            raise TypeError("Dependent variable (y) must be composed of integers")
 
-    def fit(self, framework='GLM', Quasi=False):
+    def fit(self, framework="GLM", Quasi=False):
         """
         Method that fits a particular count model usign the appropriate
         estimation technique. Models include Poisson GLM, Negative Binomial GLM,
@@ -86,24 +85,21 @@ class CountModel(object):
                             estimation framework; default is GLM
                              "GLM" | "QUASI" |
         """
-        if (framework.lower() == 'glm'):
+        if framework.lower() == "glm":
             if not Quasi:
                 results = GLM(
-                    self.y,
-                    self.X,
-                    family=Poisson(),
-                    constant=self.constant).fit()
+                    self.y, self.X, family=Poisson(), constant=self.constant
+                ).fit()
             else:
                 results = GLM(
-                    self.y,
-                    self.X,
-                    family=QuasiPoisson(),
-                    constant=self.constant).fit()
+                    self.y, self.X, family=QuasiPoisson(), constant=self.constant
+                ).fit()
             return CountModelResults(results)
 
         else:
             raise NotImplemented(
-                'Poisson GLM is the only count model currently implemented')
+                "Poisson GLM is the only count model currently implemented"
+            )
 
 
 class CountModelResults(object):

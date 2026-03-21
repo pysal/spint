@@ -155,43 +155,46 @@ class BaseGravity(CountModel):
     """
 
     def __init__(
-            self,
-            flows,
-            cost,
-            cost_func='pow',
-            o_vars=None,
-            d_vars=None,
-            origins=None,
-            destinations=None,
-            constant=True,
-            framework='GLM',
-            SF=None,
-            CD=None,
-            Lag=None,
-            Quasi=False):
+        self,
+        flows,
+        cost,
+        cost_func="pow",
+        o_vars=None,
+        d_vars=None,
+        origins=None,
+        destinations=None,
+        constant=True,
+        framework="GLM",
+        SF=None,
+        CD=None,
+        Lag=None,
+        Quasi=False,
+    ):
         n = User.check_arrays(flows, cost)
-        #User.check_y(flows, n)
+        # User.check_y(flows, n)
         self.n = n
         self.f = flows
         self.c = cost
         self.ov = o_vars
         self.dv = d_vars
         if isinstance(cost_func, str):
-            if cost_func.lower() == 'pow':
+            if cost_func.lower() == "pow":
                 self.cf = np.log
                 if (self.c == 0).any():
                     raise ValueError(
                         "Zero values detected: cost function 'pow'"
                         "requires the logarithm of the cost variable which"
-                        "is undefined at 0")
-            elif cost_func.lower() == 'exp':
+                        "is undefined at 0"
+                    )
+            elif cost_func.lower() == "exp":
                 self.cf = lambda x: x * 1.0
         elif (isinstance(cost_func, FunctionType)) | (isinstance(cost_func, np.ufunc)):
             self.cf = cost_func
         else:
             raise ValueError(
                 "cost_func must be 'exp', 'pow' or a valid "
-                " function that has a scalar as a input and output")
+                " function that has a scalar as a input and output"
+            )
 
         y = np.reshape(self.f, (-1, 1))
         if isinstance(self, Gravity):
@@ -215,20 +218,18 @@ class BaseGravity(CountModel):
                         raise ValueError(
                             "Zero values detected in column %s "
                             "of origin variables, which are undefined for "
-                            "Poisson log-linear spatial interaction models" %
-                            each)
-                    X = np.hstack(
-                        (X, np.log(np.reshape(self.ov[:, each], (-1, 1)))))
+                            "Poisson log-linear spatial interaction models" % each
+                        )
+                    X = np.hstack((X, np.log(np.reshape(self.ov[:, each], (-1, 1)))))
             else:
                 for each in range(self.ov.shape[1]):
                     if (self.ov[:, each] == 0).any():
                         raise ValueError(
                             "Zero values detected in column %s "
                             "of origin variables, which are undefined for "
-                            "Poisson log-linear spatial interaction models" %
-                            each)
-                    ov = sp.csr_matrix(
-                        np.log(np.reshape(self.ov[:, each], ((-1, 1)))))
+                            "Poisson log-linear spatial interaction models" % each
+                        )
+                    ov = sp.csr_matrix(np.log(np.reshape(self.ov[:, each], ((-1, 1)))))
                     X = sphstack(X, ov, array_out=False)
         if self.dv is not None:
             if isinstance(self, Gravity):
@@ -237,20 +238,18 @@ class BaseGravity(CountModel):
                         raise ValueError(
                             "Zero values detected in column %s "
                             "of destination variables, which are undefined for "
-                            "Poisson log-linear spatial interaction models" %
-                            each)
-                    X = np.hstack(
-                        (X, np.log(np.reshape(self.dv[:, each], (-1, 1)))))
+                            "Poisson log-linear spatial interaction models" % each
+                        )
+                    X = np.hstack((X, np.log(np.reshape(self.dv[:, each], (-1, 1)))))
             else:
                 for each in range(self.dv.shape[1]):
                     if (self.dv[:, each] == 0).any():
                         raise ValueError(
                             "Zero values detected in column %s "
                             "of destination variables, which are undefined for "
-                            "Poisson log-linear spatial interaction models" %
-                            each)
-                    dv = sp.csr_matrix(
-                        np.log(np.reshape(self.dv[:, each], ((-1, 1)))))
+                            "Poisson log-linear spatial interaction models" % each
+                        )
+                    dv = sp.csr_matrix(np.log(np.reshape(self.dv[:, each], ((-1, 1)))))
                     X = sphstack(X, dv, array_out=False)
         if isinstance(self, Gravity):
             X = np.hstack((X, self.cf(np.reshape(self.c, (-1, 1)))))
@@ -261,23 +260,22 @@ class BaseGravity(CountModel):
         if not isinstance(self, (Gravity, Production, Attraction, Doubly)):
             X = self.cf(np.reshape(self.c, (-1, 1)))
         if SF:
-            raise NotImplementedError(
-                "Spatial filter model not yet implemented")
+            raise NotImplementedError("Spatial filter model not yet implemented")
         if CD:
-            raise NotImplementedError(
-                "Competing destination model not yet implemented")
+            raise NotImplementedError("Competing destination model not yet implemented")
         if Lag:
             raise NotImplementedError(
-                "Spatial Lag autoregressive model not yet implemented")
+                "Spatial Lag autoregressive model not yet implemented"
+            )
 
         CountModel.__init__(self, y, X, constant=constant)
-        if (framework.lower() == 'glm'):
+        if framework.lower() == "glm":
             if not Quasi:
-                results = self.fit(framework='glm')
+                results = self.fit(framework="glm")
             else:
-                results = self.fit(framework='glm', Quasi=True)
+                results = self.fit(framework="glm", Quasi=True)
         else:
-            raise NotImplementedError('Only GLM is currently implemented')
+            raise NotImplementedError("Only GLM is currently implemented")
 
         self.params = results.params
         self.yhat = results.yhat
@@ -314,7 +312,8 @@ class BaseGravity(CountModel):
         else:
             raise TypeError(
                 "input must be an numpy array or list that can be coerced"
-                " into the dimensions n x 1")
+                " into the dimensions n x 1"
+            )
 
 
 class Gravity(BaseGravity):
@@ -442,9 +441,20 @@ class Gravity(BaseGravity):
 
     """
 
-    def __init__(self, flows, o_vars, d_vars, cost,
-                 cost_func, constant=True, framework='GLM', SF=None, CD=None,
-                 Lag=None, Quasi=False):
+    def __init__(
+        self,
+        flows,
+        o_vars,
+        d_vars,
+        cost,
+        cost_func,
+        constant=True,
+        framework="GLM",
+        SF=None,
+        CD=None,
+        Lag=None,
+        Quasi=False,
+    ):
         self.f = np.reshape(flows, (-1, 1))
         if len(o_vars.shape) > 1:
             p = o_vars.shape[1]
@@ -457,7 +467,7 @@ class Gravity(BaseGravity):
             p = 1
         self.dv = np.reshape(d_vars, (-1, p))
         self.c = np.reshape(cost, (-1, 1))
-        #User.check_arrays(self.f, self.ov, self.dv, self.c)
+        # User.check_arrays(self.f, self.ov, self.dv, self.c)
 
         BaseGravity.__init__(
             self,
@@ -471,7 +481,8 @@ class Gravity(BaseGravity):
             SF=SF,
             CD=CD,
             Lag=Lag,
-            Quasi=Quasi)
+            Quasi=Quasi,
+        )
 
     def local(self, loc_index, locs):
         """
@@ -499,40 +510,39 @@ class Gravity(BaseGravity):
         """
         results = {}
         covs = self.ov.shape[1] + self.dv.shape[1] + 1
-        results['AIC'] = []
-        results['deviance'] = []
-        results['pseudoR2'] = []
-        results['adj_pseudoR2'] = []
-        results['D2'] = []
-        results['adj_D2'] = []
-        results['SSI'] = []
-        results['SRMSE'] = []
+        results["AIC"] = []
+        results["deviance"] = []
+        results["pseudoR2"] = []
+        results["adj_pseudoR2"] = []
+        results["D2"] = []
+        results["adj_D2"] = []
+        results["SSI"] = []
+        results["SRMSE"] = []
         for cov in range(covs):
-            results['param' + str(cov)] = []
-            results['stde' + str(cov)] = []
-            results['pvalue' + str(cov)] = []
-            results['tvalue' + str(cov)] = []
+            results["param" + str(cov)] = []
+            results["stde" + str(cov)] = []
+            results["pvalue" + str(cov)] = []
+            results["tvalue" + str(cov)] = []
         for loc in locs:
             subset = loc_index == loc
             f = self.reshape(self.f[subset])
             o_vars = self.ov[subset.reshape(self.ov.shape[0]), :]
             d_vars = self.dv[subset.reshape(self.dv.shape[0]), :]
             dij = self.reshape(self.c[subset])
-            model = Gravity(f, o_vars, d_vars, dij, self.cf,
-                            constant=False)
-            results['AIC'].append(model.AIC)
-            results['deviance'].append(model.deviance)
-            results['pseudoR2'].append(model.pseudoR2)
-            results['adj_pseudoR2'].append(model.adj_pseudoR2)
-            results['D2'].append(model.D2)
-            results['adj_D2'].append(model.adj_D2)
-            results['SSI'].append(model.SSI)
-            results['SRMSE'].append(model.SRMSE)
+            model = Gravity(f, o_vars, d_vars, dij, self.cf, constant=False)
+            results["AIC"].append(model.AIC)
+            results["deviance"].append(model.deviance)
+            results["pseudoR2"].append(model.pseudoR2)
+            results["adj_pseudoR2"].append(model.adj_pseudoR2)
+            results["D2"].append(model.D2)
+            results["adj_D2"].append(model.adj_D2)
+            results["SSI"].append(model.SSI)
+            results["SRMSE"].append(model.SRMSE)
             for cov in range(covs):
-                results['param' + str(cov)].append(model.params[cov])
-                results['stde' + str(cov)].append(model.std_err[cov])
-                results['pvalue' + str(cov)].append(model.pvalues[cov])
-                results['tvalue' + str(cov)].append(model.tvalues[cov])
+                results["param" + str(cov)].append(model.params[cov])
+                results["stde" + str(cov)].append(model.std_err[cov])
+                results["pvalue" + str(cov)].append(model.pvalues[cov])
+                results["tvalue" + str(cov)].append(model.tvalues[cov])
         return results
 
 
@@ -663,8 +673,20 @@ class Production(BaseGravity):
 
     """
 
-    def __init__(self, flows, origins, d_vars, cost, cost_func, constant=True,
-                 framework='GLM', SF=None, CD=None, Lag=None, Quasi=False):
+    def __init__(
+        self,
+        flows,
+        origins,
+        d_vars,
+        cost,
+        cost_func,
+        constant=True,
+        framework="GLM",
+        SF=None,
+        CD=None,
+        Lag=None,
+        Quasi=False,
+    ):
         self.constant = constant
         self.f = self.reshape(flows)
         self.o = self.reshape(origins)
@@ -676,7 +698,7 @@ class Production(BaseGravity):
             p = 1
         self.dv = np.reshape(d_vars, (-1, p))
         self.c = self.reshape(cost)
-        #User.check_arrays(self.f, self.o, self.dv, self.c)
+        # User.check_arrays(self.f, self.o, self.dv, self.c)
 
         BaseGravity.__init__(
             self,
@@ -690,7 +712,8 @@ class Production(BaseGravity):
             SF=SF,
             CD=CD,
             Lag=Lag,
-            Quasi=Quasi)
+            Quasi=Quasi,
+        )
 
     def local(self, locs=None):
         """
@@ -710,19 +733,19 @@ class Production(BaseGravity):
         results = {}
         offset = 1
         covs = self.dv.shape[1] + 1
-        results['AIC'] = []
-        results['deviance'] = []
-        results['pseudoR2'] = []
-        results['adj_pseudoR2'] = []
-        results['D2'] = []
-        results['adj_D2'] = []
-        results['SSI'] = []
-        results['SRMSE'] = []
+        results["AIC"] = []
+        results["deviance"] = []
+        results["pseudoR2"] = []
+        results["adj_pseudoR2"] = []
+        results["D2"] = []
+        results["adj_D2"] = []
+        results["SSI"] = []
+        results["SRMSE"] = []
         for cov in range(covs):
-            results['param' + str(cov)] = []
-            results['stde' + str(cov)] = []
-            results['pvalue' + str(cov)] = []
-            results['tvalue' + str(cov)] = []
+            results["param" + str(cov)] = []
+            results["stde" + str(cov)] = []
+            results["pvalue" + str(cov)] = []
+            results["tvalue" + str(cov)] = []
         if locs is None:
             locs = np.unique(self.o)
         for loc in np.unique(locs):
@@ -732,21 +755,19 @@ class Production(BaseGravity):
             d_vars = self.dv[subset.reshape(self.dv.shape[0]), :]
             dij = self.reshape(self.c[subset])
             model = Production(f, o, d_vars, dij, self.cf, constant=False)
-            results['AIC'].append(model.AIC)
-            results['deviance'].append(model.deviance)
-            results['pseudoR2'].append(model.pseudoR2)
-            results['adj_pseudoR2'].append(model.adj_pseudoR2)
-            results['D2'].append(model.D2)
-            results['adj_D2'].append(model.adj_D2)
-            results['SSI'].append(model.SSI)
-            results['SRMSE'].append(model.SRMSE)
+            results["AIC"].append(model.AIC)
+            results["deviance"].append(model.deviance)
+            results["pseudoR2"].append(model.pseudoR2)
+            results["adj_pseudoR2"].append(model.adj_pseudoR2)
+            results["D2"].append(model.D2)
+            results["adj_D2"].append(model.adj_D2)
+            results["SSI"].append(model.SSI)
+            results["SRMSE"].append(model.SRMSE)
             for cov in range(covs):
-                results['param' + str(cov)].append(model.params[offset + cov])
-                results['stde' + str(cov)].append(model.std_err[offset + cov])
-                results['pvalue' +
-                        str(cov)].append(model.pvalues[offset + cov])
-                results['tvalue' +
-                        str(cov)].append(model.tvalues[offset + cov])
+                results["param" + str(cov)].append(model.params[offset + cov])
+                results["stde" + str(cov)].append(model.std_err[offset + cov])
+                results["pvalue" + str(cov)].append(model.pvalues[offset + cov])
+                results["tvalue" + str(cov)].append(model.tvalues[offset + cov])
         return results
 
 
@@ -878,9 +899,20 @@ class Attraction(BaseGravity):
 
     """
 
-    def __init__(self, flows, destinations, o_vars, cost, cost_func,
-                 constant=True, framework='GLM', SF=None, CD=None, Lag=None,
-                 Quasi=False):
+    def __init__(
+        self,
+        flows,
+        destinations,
+        o_vars,
+        cost,
+        cost_func,
+        constant=True,
+        framework="GLM",
+        SF=None,
+        CD=None,
+        Lag=None,
+        Quasi=False,
+    ):
         self.f = np.reshape(flows, (-1, 1))
         if len(o_vars.shape) > 1:
             p = o_vars.shape[1]
@@ -889,7 +921,7 @@ class Attraction(BaseGravity):
         self.ov = np.reshape(o_vars, (-1, p))
         self.d = np.reshape(destinations, (-1, 1))
         self.c = np.reshape(cost, (-1, 1))
-        #User.check_arrays(self.f, self.d, self.ov, self.c)
+        # User.check_arrays(self.f, self.d, self.ov, self.c)
 
         BaseGravity.__init__(
             self,
@@ -903,7 +935,8 @@ class Attraction(BaseGravity):
             SF=SF,
             CD=CD,
             Lag=Lag,
-            Quasi=Quasi)
+            Quasi=Quasi,
+        )
 
     def local(self, locs=None):
         """
@@ -923,19 +956,19 @@ class Attraction(BaseGravity):
         results = {}
         offset = 1
         covs = self.ov.shape[1] + 1
-        results['AIC'] = []
-        results['deviance'] = []
-        results['pseudoR2'] = []
-        results['adj_pseudoR2'] = []
-        results['D2'] = []
-        results['adj_D2'] = []
-        results['SSI'] = []
-        results['SRMSE'] = []
+        results["AIC"] = []
+        results["deviance"] = []
+        results["pseudoR2"] = []
+        results["adj_pseudoR2"] = []
+        results["D2"] = []
+        results["adj_D2"] = []
+        results["SSI"] = []
+        results["SRMSE"] = []
         for cov in range(covs):
-            results['param' + str(cov)] = []
-            results['stde' + str(cov)] = []
-            results['pvalue' + str(cov)] = []
-            results['tvalue' + str(cov)] = []
+            results["param" + str(cov)] = []
+            results["stde" + str(cov)] = []
+            results["pvalue" + str(cov)] = []
+            results["tvalue" + str(cov)] = []
         if locs is None:
             locs = np.unique(self.d)
         for loc in np.unique(locs):
@@ -945,21 +978,19 @@ class Attraction(BaseGravity):
             o_vars = self.ov[subset.reshape(self.ov.shape[0]), :]
             dij = self.reshape(self.c[subset])
             model = Attraction(f, d, o_vars, dij, self.cf, constant=False)
-            results['AIC'].append(model.AIC)
-            results['deviance'].append(model.deviance)
-            results['pseudoR2'].append(model.pseudoR2)
-            results['adj_pseudoR2'].append(model.adj_pseudoR2)
-            results['D2'].append(model.D2)
-            results['adj_D2'].append(model.adj_D2)
-            results['SSI'].append(model.SSI)
-            results['SRMSE'].append(model.SRMSE)
+            results["AIC"].append(model.AIC)
+            results["deviance"].append(model.deviance)
+            results["pseudoR2"].append(model.pseudoR2)
+            results["adj_pseudoR2"].append(model.adj_pseudoR2)
+            results["D2"].append(model.D2)
+            results["adj_D2"].append(model.adj_D2)
+            results["SSI"].append(model.SSI)
+            results["SRMSE"].append(model.SRMSE)
             for cov in range(covs):
-                results['param' + str(cov)].append(model.params[offset + cov])
-                results['stde' + str(cov)].append(model.std_err[offset + cov])
-                results['pvalue' +
-                        str(cov)].append(model.pvalues[offset + cov])
-                results['tvalue' +
-                        str(cov)].append(model.tvalues[offset + cov])
+                results["param" + str(cov)].append(model.params[offset + cov])
+                results["stde" + str(cov)].append(model.std_err[offset + cov])
+                results["pvalue" + str(cov)].append(model.pvalues[offset + cov])
+                results["tvalue" + str(cov)].append(model.tvalues[offset + cov])
         return results
 
 
@@ -1095,15 +1126,26 @@ class Doubly(BaseGravity):
 
     """
 
-    def __init__(self, flows, origins, destinations, cost, cost_func,
-                 constant=True, framework='GLM', SF=None, CD=None, Lag=None,
-                 Quasi=False):
+    def __init__(
+        self,
+        flows,
+        origins,
+        destinations,
+        cost,
+        cost_func,
+        constant=True,
+        framework="GLM",
+        SF=None,
+        CD=None,
+        Lag=None,
+        Quasi=False,
+    ):
 
         self.f = np.reshape(flows, (-1, 1))
         self.o = np.reshape(origins, (-1, 1))
         self.d = np.reshape(destinations, (-1, 1))
         self.c = np.reshape(cost, (-1, 1))
-        #User.check_arrays(self.f, self.o, self.d, self.c)
+        # User.check_arrays(self.f, self.o, self.d, self.c)
 
         BaseGravity.__init__(
             self,
@@ -1117,7 +1159,8 @@ class Doubly(BaseGravity):
             SF=SF,
             CD=CD,
             Lag=Lag,
-            Quasi=Quasi)
+            Quasi=Quasi,
+        )
 
     def local(self, locs=None):
         """
@@ -1129,4 +1172,5 @@ class Doubly(BaseGravity):
         """
         raise NotImplementedError(
             "Local models not possible for"
-            " doubly-constrained model due to insufficient degrees of freedom.")
+            " doubly-constrained model due to insufficient degrees of freedom."
+        )
