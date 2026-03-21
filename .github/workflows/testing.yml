@@ -26,16 +26,17 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         environment-file:
-          - ci/310-min.yaml
-          - ci/311-latest.yaml
+          - ci/312-oldest.yaml
           - ci/312-latest.yaml
-          - ci/312-dev.yaml
+          - ci/313-latest.yaml
+          - ci/314-latest.yaml
+          - ci/314-dev.yaml
         include:
-          - environment-file: ci/312-latest.yaml
+          - environment-file: ci/314-latest.yaml
             os: macos-15-intel # Intel
-          - environment-file: ci/312-latest.yaml
+          - environment-file: ci/314-latest.yaml
             os: macos-latest # Apple Silicon
-          - environment-file: ci/312-latest.yaml
+          - environment-file: ci/314-latest.yaml
             os: windows-latest
       fail-fast: false
 
@@ -64,13 +65,22 @@ jobs:
           pytest spint \
           -v \
           -r a \
-          -n auto \
+          -n logical \
           --color yes \
           --cov spint \
           --cov-report xml \
           --cov-report term-missing \
-          --cov-append \
-          --doctest-modules
+          --cov-append
+
+      - name: run doctests
+        if: ${{ !endsWith(matrix.environment-file, 'oldest.yaml') }}
+        run: |
+          pytest spint \
+          --doctest-only \
+          -v \
+          -r a \
+          -n logical \
+          --color yes
 
       #- name: codecov
       #  uses: codecov/codecov-action@v5

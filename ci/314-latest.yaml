@@ -2,7 +2,7 @@ name: test
 channels:
   - conda-forge
 dependencies:
-  - python=3.11
+  - python=3.14
   # required
   - libpysal
   - numpy
@@ -12,5 +12,13 @@ dependencies:
   # testing
   - pytest
   - pytest-cov
+  - pytest-doctestplus
   - pytest-xdist
   - codecov
+  # docs
+  - nbsphinx
+  - numpydoc
+  - sphinx
+  - sphinx-gallery
+  - sphinxcontrib-bibtex
+  - sphinx_bootstrap_theme

@@ -147,26 +147,26 @@ class VecMoran:
     #randomization technique A
     >>> vmo = VecMoran(vecs, wo, focus='origin', rand='A')
     >>> vmd = VecMoran(vecs, wd, focus='destination', rand='A')
-    >>> vmo.I
-    0.6459445943670211
-    >>> vmo.p_z_sim
-    0.03898650733809228
-    >>> vmd.I
-    -0.7646036950223406
-    >>> vmd.p_z_sim
-    0.11275129553163704
+    >>> np.round(vmo.I, 10).astype(float)
+    np.float64(0.6459445944)
+    >>> np.round(vmo.p_z_sim, 10)
+    np.float64(0.0389865073)
+    >>> np.round(vmd.I, 10)
+    np.float64(-0.764603695)
+    >>> np.round(vmd.p_z_sim, 10)
+    np.float64(0.1127512955)
 
     #randomization technique B
     >>> vmo = VecMoran(vecs, wo, focus='origin', rand='B')
     >>> vmd = VecMoran(vecs, wd, focus='destination', rand='B')
-    >>> vmo.I
-    0.6459445943670211
-    >>> round(vmo.p_z_sim, 14)
-    0.05087923006558
-    >>> vmd.I
-    -0.7646036950223406
-    >>> vmd.p_z_sim
-    0.1468368983650693
+    >>> np.round(vmo.I, 10)
+    np.float64(0.6459445944)
+    >>> np.round(vmo.p_z_sim, 10)
+    np.float64(0.0508792301)
+    >>> np.round(vmd.I, 10)
+    np.float64(-0.764603695)
+    >>> np.round(vmd.p_z_sim, 10)
+    np.float64(0.1468368984)
 
     """
 

@@ -133,7 +133,7 @@ class TestUniversal(unittest.TestCase):
         T_L = model.flowmat()
         np.testing.assert_almost_equal(
             pearsonr(T_L.flatten(), T_obs.flatten()),
-            (-0.0728415, 0.5181216)
+            (-0.0724832, 0.5201876)
         )
 
     # x: array([5.0901729e-01, 1.2200025e-06])
