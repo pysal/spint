@@ -73,7 +73,7 @@ jobs:
           --cov-append
 
       - name: run doctests
-        if: ${{ !endsWith(github.ref, 'oldest.yaml') }}
+        if: ${{ !endsWith(matrix.environment-file, 'oldest.yaml') }}
         run: |
           pytest spint \
           --doctest-only \
