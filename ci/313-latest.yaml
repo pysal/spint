@@ -12,6 +12,7 @@ dependencies:
   # testing
   - pytest
   - pytest-cov
+  - pytest-doctestplus
   - pytest-xdist
   - codecov
   # docs

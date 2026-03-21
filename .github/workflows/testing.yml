@@ -65,7 +65,7 @@ jobs:
           pytest spint \
           -v \
           -r a \
-          -n auto \
+          -n logical \
           --color yes \
           --cov spint \
           --cov-report xml \
@@ -75,10 +75,11 @@ jobs:
       - name: run doctests
         if: ${{ !endsWith(github.ref, 'oldest.yaml') }}
         run: |
-          pytest --doctest-modules \
+          pytest spint \
+          --doctest-only \
           -v \
           -r a \
-          -n auto \
+          -n logical \
           --color yes
 
       #- name: codecov
