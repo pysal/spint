@@ -15,7 +15,7 @@ Yan, X.-Y., Zhao, C., Fan, Y., Di, Z., and Wang, W.-X. (2014). "Universal
     Society Interface, 11, 100.
 """
 
-__author__ = 'Tyler Hoffman tylerhoff1@gmail.com'
+__author__ = "Tyler Hoffman tylerhoff1@gmail.com"
 
 from abc import ABC, abstractmethod
 import numpy as np
@@ -46,15 +46,17 @@ class Universal(ABC):
     flowmat         : abstract method
                       estimates flows, implemented by children
     """
+
     def __init__(self, inflows, outflows, dists):
-        self.N = len(outflows)           # number of origins
-        self.M = len(inflows)            # number of destinations
+        self.N = len(outflows)  # number of origins
+        self.M = len(inflows)  # number of destinations
         self.outflows = outflows.copy()  # list of origin outflows
-        self.inflows = inflows.copy()    # list of destination inflows
-        self.dists = dists.copy()        # list of distances
+        self.inflows = inflows.copy()  # list of destination inflows
+        self.dists = dists.copy()  # list of distances
 
     @abstractmethod
-    def flowmat(self): pass
+    def flowmat(self):
+        pass
 
 
 class Lenormand(Universal):
@@ -94,8 +96,8 @@ class Lenormand(Universal):
     def calibrate(self, avg_sa):
         # Constants from the paper
         nu = 0.177
-        alpha = 3.15 * 10**(-4)
-        self.beta = alpha*avg_sa**(-nu)
+        alpha = 3.15 * 10 ** (-4)
+        self.beta = alpha * avg_sa ** (-nu)
 
     def flowmat(self):
         # Builds the matrix T from the parameter beta and a matrix of distances
@@ -108,12 +110,13 @@ class Lenormand(Universal):
         # Assembly loop
         while sum(sOUT) > 0:
             # Pick random nonzero sOUT
-            idxs, = np.where(sOUT > 0)
+            (idxs,) = np.where(sOUT > 0)
             i = np.random.choice(idxs)
 
             # Compute Pij's (not memoized b/c it changes on iteration)
-            Pi = np.multiply(sIN, np.exp(-self.beta*self.dists[i, :])) / \
-                np.dot(sIN, np.exp(-self.beta*self.dists[i, :]))
+            Pi = np.multiply(sIN, np.exp(-self.beta * self.dists[i, :])) / np.dot(
+                sIN, np.exp(-self.beta * self.dists[i, :])
+            )
 
             # Pick random j according to Pij
             j = np.random.choice(range(self.N), p=Pi)
@@ -166,15 +169,20 @@ class Radiation(Universal):
         inflows = self.inflows[didxs]
 
         # Normalization
-        F = 1.0/(1.0 - self.outflows[idx]/total_origins)
+        F = 1.0 / (1.0 - self.outflows[idx] / total_origins)
 
         pop_in_radius = 0
         flows = np.zeros((self.M,))
         for j in range(self.M):
             # Use formula from the paper
-            flows[j] = F*(self.outflows[idx]*inflows[j]) / \
-                       ((self.outflows[idx] + pop_in_radius) *
-                        (self.outflows[idx] + inflows[j] + pop_in_radius))
+            flows[j] = (
+                F
+                * (self.outflows[idx] * inflows[j])
+                / (
+                    (self.outflows[idx] + pop_in_radius)
+                    * (self.outflows[idx] + inflows[j] + pop_in_radius)
+                )
+            )
 
             pop_in_radius += inflows[j]
 
@@ -245,11 +253,12 @@ class PWO(Universal):
             for k in range(self.M):  # loop over destinations
                 denom_pop_in_radius += self.inflows[k]
                 if k != i:
-                    denom += self.inflows[k] * (1/denom_pop_in_radius -
-                                                1/self.total)
+                    denom += self.inflows[k] * (
+                        1 / denom_pop_in_radius - 1 / self.total
+                    )
 
             # Use formula from the paper
-            flows[i] = self.inflows[jdx]*(1/pop_in_radius - 1/self.total)/denom
+            flows[i] = self.inflows[jdx] * (1 / pop_in_radius - 1 / self.total) / denom
 
         # Unsort list
         return flows[didxs.argsort()]
@@ -267,15 +276,15 @@ class PWO(Universal):
 def test():
     # Read data from Austria file
     N = 9
-    austria = pd.read_csv('austria.csv')
+    austria = pd.read_csv("austria.csv")
     modN = austria[austria.index % N == 0]
-    outflows = modN['Oi'].values
-    inflows = austria['Dj'].head(n=N).values
+    outflows = modN["Oi"].values
+    inflows = austria["Dj"].head(n=N).values
     locs = np.zeros((N, 2))
-    locs[:, 0] = modN['X'].values
-    locs[:, 1] = modN['Y'].values
-    dists = np.reshape(austria['Dij'].values, (N, N), order='C')
-    T_obs = np.reshape(austria['Data'].values, (N, N), order='C')
+    locs[:, 0] = modN["X"].values
+    locs[:, 1] = modN["Y"].values
+    dists = np.reshape(austria["Dij"].values, (N, N), order="C")
+    T_obs = np.reshape(austria["Data"].values, (N, N), order="C")
 
     # Lenormand paper's model
     model = Lenormand(inflows, outflows, dists)
@@ -293,5 +302,5 @@ def test():
     print(pearsonr(T_P.flatten(), T_obs.flatten()))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test()

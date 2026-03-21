@@ -64,12 +64,12 @@ def srmse(model):
         yhat = model.yhat.reshape((-1, 1)).astype(float)
     except BaseException:
         yhat = model.mu.reshape((-1, 1)).astype(float)
-    srmse = ((np.sum((y - yhat)**2) / n)**.5) / (np.sum(y) / n)
+    srmse = ((np.sum((y - yhat) ** 2) / n) ** 0.5) / (np.sum(y) / n)
     return srmse
 
 
 def spcategorical(index):
-    '''
+    """
     Returns a dummy matrix given an array of categorical variables.
     Parameters
     ----------
@@ -82,7 +82,7 @@ def spcategorical(index):
                    A sparse matrix of dummy (indicator/binary) variables for the
                    categorical data.
 
-    '''
+    """
     if np.squeeze(index).ndim == 1:
         id_set = np.unique(index)
         n = len(index)
@@ -96,7 +96,7 @@ def spcategorical(index):
         raise IndexError("The index %s is not understood" % index)
 
 
-#old and slow
+# old and slow
 """
 def spcategorical(n_cat_ids):
     '''

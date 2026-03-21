@@ -43,10 +43,11 @@ def phi_disp(model):
     try:
         y = model.y.reshape((-1, 1))
         yhat = model.yhat.reshape((-1, 1))
-        ytest = (((y - yhat)**2 - y) / yhat).reshape((-1, 1))
+        ytest = (((y - yhat) ** 2 - y) / yhat).reshape((-1, 1))
     except BaseException:
         raise AttributeError(
-            "Check that fitted model has valid 'y' and 'yhat' attributes")
+            "Check that fitted model has valid 'y' and 'yhat' attributes"
+        )
 
     phi = 1 + np.mean(ytest)
     zval = np.sqrt(len(ytest)) * np.mean(ytest) / np.std(ytest, ddof=1)
@@ -88,10 +89,11 @@ def alpha_disp(model, alt_var=lambda x: x):
     try:
         y = model.y.reshape((-1, 1))
         yhat = model.yhat.reshape((-1, 1))
-        ytest = (((y - yhat)**2 - y) / yhat).reshape((-1, 1))
+        ytest = (((y - yhat) ** 2 - y) / yhat).reshape((-1, 1))
     except BaseException:
         raise AttributeError(
-            "Make sure model passed has been estimated and has a valid 'y' and 'yhat' attribute")
+            "Make sure model passed has been estimated and has a valid 'y' and 'yhat' attribute"
+        )
 
     if isinstance(alt_var, FunctionType):
         X = (alt_var(yhat) / yhat).reshape((-1, 1))
@@ -101,6 +103,7 @@ def alpha_disp(model, alt_var=lambda x: x):
         pval = stats.norm.sf(zval)
     else:
         raise TypeError(
-            "The alternative variance function, 'alt_var', must be a valid function'")
+            "The alternative variance function, 'alt_var', must be a valid function'"
+        )
 
     return np.array([alpha, zval, pval])
