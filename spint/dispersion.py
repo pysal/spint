@@ -6,11 +6,11 @@ a variable.
 
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
-from spglm.glm import GLM
-from spglm.family import Poisson
+from types import FunctionType
+
 import numpy as np
 import scipy.stats as stats
-from types import FunctionType
+from spglm.glm import GLM
 
 
 def phi_disp(model):
@@ -47,7 +47,7 @@ def phi_disp(model):
     except BaseException:
         raise AttributeError(
             "Check that fitted model has valid 'y' and 'yhat' attributes"
-        )
+        ) from None
 
     phi = 1 + np.mean(ytest)
     zval = np.sqrt(len(ytest)) * np.mean(ytest) / np.std(ytest, ddof=1)
@@ -92,8 +92,9 @@ def alpha_disp(model, alt_var=lambda x: x):
         ytest = (((y - yhat) ** 2 - y) / yhat).reshape((-1, 1))
     except BaseException:
         raise AttributeError(
-            "Make sure model passed has been estimated and has a valid 'y' and 'yhat' attribute"
-        )
+            "Make sure model passed has been estimated and "
+            "has a valid 'y' and 'yhat' attribute"
+        ) from None
 
     if isinstance(alt_var, FunctionType):
         X = (alt_var(yhat) / yhat).reshape((-1, 1))
