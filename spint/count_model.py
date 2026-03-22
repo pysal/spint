@@ -5,12 +5,11 @@ types of estimation technqiues.
 
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
-import numpy as np
-from spglm.glm import GLM
 from spglm.family import Poisson, QuasiPoisson
+from spglm.glm import GLM
 
 
-class CountModel(object):
+class CountModel:
     """
     Base class for variety of count-based models such as Poisson, negative binomial,
     etc. of the exponetial family.
@@ -45,6 +44,7 @@ class CountModel(object):
     -------
     >>> from spint.count_model import CountModel
     >>> import libpysal
+    >>> import numpy as np
     >>> db = libpysal.io.open(libpysal.examples.get_path('columbus.dbf'),'r')
     >>> y =  np.array(db.by_col("HOVAL"))
     >>> y = np.reshape(y, (49,1))
@@ -60,7 +60,13 @@ class CountModel(object):
 
     """
 
-    def __init__(self, y, X, family=Poisson(), constant=True):
+    def __init__(
+        self,
+        y,
+        X,
+        family=Poisson(),  # noqa: ARG002, B008 - {Unused method argument: `family`, Do not perform function call}
+        constant=True,
+    ):
         self.y = self._check_counts(y)
         self.X = X
         self.constant = constant
@@ -97,12 +103,12 @@ class CountModel(object):
             return CountModelResults(results)
 
         else:
-            raise NotImplemented(
+            raise NotImplementedError(
                 "Poisson GLM is the only count model currently implemented"
             )
 
 
-class CountModelResults(object):
+class CountModelResults:
     """
     Results of estimated GLM and diagnostics.
 
