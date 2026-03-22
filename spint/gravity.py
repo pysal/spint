@@ -1,4 +1,3 @@
-# coding=utf-8
 """
  Wilsonian (1967) family of gravity-type spatial interaction models
 
@@ -16,13 +15,17 @@ Wilson, A. G. (1967). A statistical theory of spatial distribution models.
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
 from types import FunctionType
+
 import numpy as np
 from scipy import sparse as sp
-from spreg import user_output as User
-from spreg.utils import sphstack
 from spglm.utils import cache_readonly
+from spreg import (
+    user_output as User,  # noqa: N812 Lowercase `user_output` imported as non-lowercase `User`
+)
+from spreg.utils import sphstack
+
 from .count_model import CountModel
-from .utils import sorensen, srmse, spcategorical
+from .utils import sorensen, spcategorical, srmse
 
 
 class BaseGravity(CountModel):
@@ -216,18 +219,18 @@ class BaseGravity(CountModel):
                 for each in range(self.ov.shape[1]):
                     if (self.ov[:, each] == 0).any():
                         raise ValueError(
-                            "Zero values detected in column %s "
+                            f"Zero values detected in column {each} "
                             "of origin variables, which are undefined for "
-                            "Poisson log-linear spatial interaction models" % each
+                            "Poisson log-linear spatial interaction models"
                         )
                     X = np.hstack((X, np.log(np.reshape(self.ov[:, each], (-1, 1)))))
             else:
                 for each in range(self.ov.shape[1]):
                     if (self.ov[:, each] == 0).any():
                         raise ValueError(
-                            "Zero values detected in column %s "
+                            f"Zero values detected in column {each} "
                             "of origin variables, which are undefined for "
-                            "Poisson log-linear spatial interaction models" % each
+                            "Poisson log-linear spatial interaction models"
                         )
                     ov = sp.csr_matrix(np.log(np.reshape(self.ov[:, each], ((-1, 1)))))
                     X = sphstack(X, ov, array_out=False)
@@ -236,18 +239,18 @@ class BaseGravity(CountModel):
                 for each in range(self.dv.shape[1]):
                     if (self.dv[:, each] == 0).any():
                         raise ValueError(
-                            "Zero values detected in column %s "
+                            f"Zero values detected in column {each} "
                             "of destination variables, which are undefined for "
-                            "Poisson log-linear spatial interaction models" % each
+                            "Poisson log-linear spatial interaction models"
                         )
                     X = np.hstack((X, np.log(np.reshape(self.dv[:, each], (-1, 1)))))
             else:
                 for each in range(self.dv.shape[1]):
                     if (self.dv[:, each] == 0).any():
                         raise ValueError(
-                            "Zero values detected in column %s "
+                            f"Zero values detected in column {each} "
                             "of destination variables, which are undefined for "
-                            "Poisson log-linear spatial interaction models" % each
+                            "Poisson log-linear spatial interaction models"
                         )
                     dv = sp.csr_matrix(np.log(np.reshape(self.dv[:, each], ((-1, 1)))))
                     X = sphstack(X, dv, array_out=False)
@@ -456,15 +459,9 @@ class Gravity(BaseGravity):
         Quasi=False,
     ):
         self.f = np.reshape(flows, (-1, 1))
-        if len(o_vars.shape) > 1:
-            p = o_vars.shape[1]
-        else:
-            p = 1
+        p = o_vars.shape[1] if len(o_vars.shape) > 1 else 1
         self.ov = np.reshape(o_vars, (-1, p))
-        if len(d_vars.shape) > 1:
-            p = d_vars.shape[1]
-        else:
-            p = 1
+        p = d_vars.shape[1] if len(d_vars.shape) > 1 else 1
         self.dv = np.reshape(d_vars, (-1, p))
         self.c = np.reshape(cost, (-1, 1))
         # User.check_arrays(self.f, self.ov, self.dv, self.c)
@@ -773,7 +770,8 @@ class Production(BaseGravity):
 
 class Attraction(BaseGravity):
     """
-    Attraction-constrained (destination-constrained) gravity-type spatial interaction model
+    Attraction-constrained (destination-constrained)
+    gravity-type spatial interaction model
 
     Parameters
     ----------
@@ -914,10 +912,7 @@ class Attraction(BaseGravity):
         Quasi=False,
     ):
         self.f = np.reshape(flows, (-1, 1))
-        if len(o_vars.shape) > 1:
-            p = o_vars.shape[1]
-        else:
-            p = 1
+        p = o_vars.shape[1] if len(o_vars.shape) > 1 else 1
         self.ov = np.reshape(o_vars, (-1, p))
         self.d = np.reshape(destinations, (-1, 1))
         self.c = np.reshape(cost, (-1, 1))

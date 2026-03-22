@@ -6,8 +6,10 @@ Tests for analysis of spatial autocorrelation within vectors
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
 import unittest
+
 import numpy as np
 from libpysal.weights.distance import DistanceBand
+
 from ..vec_SA import VecMoran
 
 

@@ -9,11 +9,13 @@ Cameron, Colin A. & Trivedi, Pravin K. (2013) Regression Analysis of Count Data.
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
 import unittest
-import numpy as np
+
 import libpysal
+import numpy as np
 from spglm.family import Poisson
+
 from ..count_model import CountModel
-from ..dispersion import phi_disp, alpha_disp
+from ..dispersion import alpha_disp, phi_disp
 
 
 class TestDispersion(unittest.TestCase):

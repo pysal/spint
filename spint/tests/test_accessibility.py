@@ -1,16 +1,18 @@
 """
 Tests for Accessibility function.
 
-The correctness of the function is veryfied by matching the output to manually calculated values, using very simple dummy dataset.
+The correctness of the function is veryfied by matching the output to
+manually calculated values, using very simple dummy dataset.
 
 """
 
 __author__ = "Lenka Hasova haska.lenka@gmail.com"
 
 import unittest
+
 import numpy as np
-from ..flow_accessibility import _generate_dummy_flows
-from ..flow_accessibility import Accessibility
+
+from ..flow_accessibility import Accessibility, _generate_dummy_flows
 
 
 class AccessibilityTest(unittest.TestCase):

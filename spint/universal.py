@@ -18,6 +18,7 @@ Yan, X.-Y., Zhao, C., Fan, Y., Di, Z., and Wang, W.-X. (2014). "Universal
 __author__ = "Tyler Hoffman tylerhoff1@gmail.com"
 
 from abc import ABC, abstractmethod
+
 import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr
