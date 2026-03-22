@@ -1,11 +1,17 @@
+# ruff: noqa: F401 - imported but unused
+
 import contextlib
 from importlib.metadata import PackageNotFoundError, version
 
-from .gravity import Gravity, Production, Attraction, Doubly
-from .utils import CPC, sorensen, srmse
-from .vec_SA import VecMoran as Moran_Vector
-from .dispersion import phi_disp, alpha_disp
+from .dispersion import alpha_disp, phi_disp
 from .flow_accessibility import Accessibility
+from .gravity import Attraction, Doubly, Gravity, Production
+from .utils import (
+    # CPC,  # problem -- `Y` not defined inside function -- inoperable
+    sorensen,
+    srmse,
+)
+from .vec_SA import VecMoran as Moran_Vector
 
 with contextlib.suppress(PackageNotFoundError):
     __version__ = version("spint")

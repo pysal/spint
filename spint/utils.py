@@ -4,13 +4,14 @@ Useful functions for analyzing spatial interaction data.
 
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
-from scipy import sparse as sp
-import numpy as np
 from collections import defaultdict
 from functools import partial
 from itertools import count
 
+import numpy as np
+from scipy import sparse as sp
 
+''' see `<<<<<` below - `Y` not defined
 def CPC(model):
     """
     Common part of commuters based on Sorensen index
@@ -24,9 +25,10 @@ def CPC(model):
     N = model.n
     YYhat = np.hstack([y, yhat])
     NCC = np.sum(np.min(YYhat, axis=1))
-    NCY = np.sum(Y)
+    NCY = np.sum(Y)  # noqa: F821 Undefined name `Y` <<<<<
     NCYhat = np.sum(yhat)
     return (N * NCC) / (NCY + NCYhat)
+'''
 
 
 def sorensen(model):
@@ -93,7 +95,7 @@ def spcategorical(index):
         indptr = np.arange(n + 1, dtype=int)
         return sp.csr_matrix((np.ones(n), index, indptr))
     else:
-        raise IndexError("The index %s is not understood" % index)
+        raise IndexError(f"The index {index} is not understood")
 
 
 # old and slow
