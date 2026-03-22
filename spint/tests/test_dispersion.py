@@ -8,7 +8,6 @@ Cameron, Colin A. & Trivedi, Pravin K. (2013) Regression Analysis of Count Data.
 
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
-import unittest
 
 import libpysal
 import numpy as np
@@ -18,8 +17,8 @@ from ..count_model import CountModel
 from ..dispersion import alpha_disp, phi_disp
 
 
-class TestDispersion(unittest.TestCase):
-    def setUp(self):
+class TestDispersion:
+    def setup_method(self):
         db = libpysal.io.open(libpysal.examples.get_path("columbus.dbf"), "r")
         y = np.array(db.by_col("HOVAL"))
         y = np.reshape(y, (49, 1))
@@ -44,7 +43,3 @@ class TestDispersion(unittest.TestCase):
         np.testing.assert_allclose(
             alpha2, [0.10690133, 2.24709978, 0.01231683], atol=1.0e-8
         )
-
-
-if __name__ == "__main__":
-    unittest.main()

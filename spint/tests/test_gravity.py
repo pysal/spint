@@ -12,17 +12,17 @@ started in spatial interaction modelling (Working Paper No. 184). UCL: Citeseer.
 """
 
 import math
-import unittest
 
 import numpy as np
+import pytest
 
 from ..gravity import Attraction, BaseGravity, Doubly, Gravity, Production
 
 
-class TestGravity(unittest.TestCase):
+class TestGravity:
     """Tests for gravity-type models"""
 
-    def setUp(self):
+    def setup_method(self):
         self.f = np.array(
             [
                 1131,
@@ -490,11 +490,11 @@ class TestGravity(unittest.TestCase):
         dij = np.array(self.dij).reshape((-1, 1))
         model = BaseGravity(f, dij, "exp", constant=False)
         np.testing.assert_allclose(model.params, [0.01641585], atol=0.0001)
-        self.assertAlmostEqual(model.AIC, 957622.28429746185, delta=0.0001)
+        assert pytest.approx(model.AIC, rel=0.0001) == 957622.28429746185
         np.testing.assert_allclose(model.cov_params, [[1.92096665e-10]])
-        self.assertAlmostEqual(model.deviance, 1087408.9707170483, delta=0.0001)
-        self.assertAlmostEqual(model.llf, -478810.14214873099, delta=0.0001)
-        self.assertAlmostEqual(model.llnull, -88037.0499629, delta=0.0001)
+        assert pytest.approx(model.deviance, rel=0.0001) == 1087408.9707170483
+        assert pytest.approx(model.llf, rel=0.0001) == -478810.14214873099
+        assert pytest.approx(model.llnull, rel=0.0001) == -88037.0499629
         np.testing.assert_allclose(model.pvalues, [0.0])
         np.testing.assert_allclose(model.std_err, [1.38598941e-05])
         np.testing.assert_allclose(model.tvalues, [1184.41355888])
@@ -581,11 +581,11 @@ class TestGravity(unittest.TestCase):
         dij = np.array(self.dij).reshape((-1, 1))
         model = BaseGravity(f, dij, "pow", constant=False)
         np.testing.assert_allclose(model.params, [1.27223738], atol=0.0001)
-        self.assertAlmostEqual(model.AIC, 377298.04716333596, delta=0.0001)
+        assert pytest.approx(model.AIC, rel=0.0001) == 377298.04716333596
         np.testing.assert_allclose(model.cov_params, [[4.31955426e-07]])
-        self.assertAlmostEqual(model.deviance, 409811.34329065739, delta=0.0001)
-        self.assertAlmostEqual(model.llf, -188648.02358166798, delta=0.0001)
-        self.assertAlmostEqual(model.llnull, -88037.0499629, delta=0.0001)
+        assert pytest.approx(model.deviance, rel=0.0001) == 409811.34329065739
+        assert pytest.approx(model.llf, rel=0.0001) == -188648.02358166798
+        assert pytest.approx(model.llnull, rel=0.0001) == -88037.0499629
         np.testing.assert_allclose(model.pvalues, [0.0])
         np.testing.assert_allclose(model.std_err, [0.00065723], atol=0.000001)
         np.testing.assert_allclose(model.tvalues, [1935.74740017])
@@ -672,11 +672,11 @@ class TestGravity(unittest.TestCase):
         dij = np.array(self.dij).reshape((-1, 1))
         model = BaseGravity(f, dij, "exp", constant=False, Quasi=True)
         np.testing.assert_allclose(model.params, [0.01641585], atol=0.0001)
-        self.assertTrue(math.isnan(model.AIC))
+        assert math.isnan(model.AIC)
         np.testing.assert_allclose(model.cov_params, [[0.00079749]], atol=1.0e-8)
-        self.assertAlmostEqual(model.deviance, 1087408.9707170483, delta=0.0001)
-        self.assertTrue(np.isnan(model.llf))
-        self.assertTrue(np.isnan(model.llnull))
+        assert pytest.approx(model.deviance, rel=0.0001) == 1087408.9707170483
+        assert np.isnan(model.llf)
+        assert np.isnan(model.llnull)
         np.testing.assert_allclose(model.pvalues, [0.56103881])
         np.testing.assert_allclose(model.std_err, [0.02823993], atol=1.0e-8)
         np.testing.assert_allclose(model.tvalues, [0.58129922])
@@ -764,7 +764,7 @@ class TestGravity(unittest.TestCase):
             model.params,
             [-7.95447436e00, 8.63867812e-01, 8.80474585e-01, -6.20544765e-03],
         )
-        self.assertAlmostEqual(model.AIC, 20395.085388908723, delta=0.0001)
+        assert pytest.approx(model.AIC, rel=0.0001) == 20395.085388908723
         np.testing.assert_allclose(
             model.cov_params,
             [
@@ -774,9 +774,9 @@ class TestGravity(unittest.TestCase):
                 [-2.40317578e-06, 1.16544737e-07, 9.94368232e-08, 2.68830005e-09],
             ],
         )
-        self.assertAlmostEqual(model.deviance, 19806.408696637576, delta=0.0001)
-        self.assertAlmostEqual(model.llf, -10193.542694454361, delta=0.0001)
-        self.assertAlmostEqual(model.llnull, -88037.0499629, delta=0.0001)
+        assert pytest.approx(model.deviance, rel=0.0001) == 19806.408696637576
+        assert pytest.approx(model.llf, rel=0.0001) == -10193.542694454361
+        assert pytest.approx(model.llnull, rel=0.0001) == -88037.0499629
         np.testing.assert_allclose(model.pvalues, [0.0, 0.0, 0.0, 0.0])
         np.testing.assert_allclose(
             model.std_err,
@@ -862,19 +862,19 @@ class TestGravity(unittest.TestCase):
                 199.99352826,
             ],
         )
-        self.assertAlmostEqual(model.D2, 0.88713874099960177)
-        self.assertAlmostEqual(model.adj_D2, 0.88215956780840776)
-        self.assertAlmostEqual(model.SSI, 0.72706171189789603)
-        self.assertAlmostEqual(model.pseudoR2, 0.88421303645743465)
-        self.assertAlmostEqual(model.adj_pseudoR2, 0.88416760104130376)
-        self.assertAlmostEqual(model.SRMSE, 0.62063116008447083)
+        assert pytest.approx(model.D2) == 0.88713874099960177
+        assert pytest.approx(model.adj_D2) == 0.88215956780840776
+        assert pytest.approx(model.SSI) == 0.72706171189789603
+        assert pytest.approx(model.pseudoR2) == 0.88421303645743465
+        assert pytest.approx(model.adj_pseudoR2) == 0.88416760104130376
+        assert pytest.approx(model.SRMSE) == 0.62063116008447083
 
     def test_local_Gravity(self):
         model = Gravity(self.f, self.o_var, self.d_var, self.dij, "exp")
         local = model.local(loc_index=self.o, locs=np.unique(self.o))
-        self.assertEqual(
-            list(local.keys()).sort(),
-            [
+        assert (
+            list(local.keys()).sort()
+            == [
                 "stde0",
                 "stde1",
                 "stde2",
@@ -895,7 +895,7 @@ class TestGravity(unittest.TestCase):
                 "D2",
                 "pseudoR2",
                 "param2",
-            ].sort(),
+            ].sort()
         )
 
     def test_Production(self):
@@ -917,7 +917,7 @@ class TestGravity(unittest.TestCase):
             ],
             atol=0.0001,
         )
-        self.assertAlmostEqual(model.AIC, 15882.651018068489, delta=0.0001)
+        assert pytest.approx(model.AIC, rel=0.0001) == 15882.651018068489
         np.testing.assert_allclose(
             model.cov_params,
             [
@@ -1066,9 +1066,9 @@ class TestGravity(unittest.TestCase):
                 ],
             ],
         )
-        self.assertAlmostEqual(model.deviance, 15279.974241770311, delta=0.0001)
-        self.assertAlmostEqual(model.llf, -7930.3255090342445, delta=0.0001)
-        self.assertAlmostEqual(model.llnull, -88037.0499629, delta=0.0001)
+        assert pytest.approx(model.deviance, rel=0.0001) == 15279.974241770311
+        assert pytest.approx(model.llf, rel=0.0001) == -7930.3255090342445
+        assert pytest.approx(model.llnull, rel=0.0001) == -88037.0499629
         np.testing.assert_allclose(
             model.pvalues,
             [
@@ -1194,19 +1194,19 @@ class TestGravity(unittest.TestCase):
                 6.40968342e02,
             ],
         )
-        self.assertAlmostEqual(model.D2, 0.912931356874)
-        self.assertAlmostEqual(model.adj_D2, 0.89865780882)
-        self.assertAlmostEqual(model.SSI, 0.740619203383)
-        self.assertAlmostEqual(model.pseudoR2, 0.909920590111)
-        self.assertAlmostEqual(model.adj_pseudoR2, 0.909795642717)
-        self.assertAlmostEqual(model.SRMSE, 0.46622685091043831)
+        assert pytest.approx(model.D2) == 0.912931356874
+        assert pytest.approx(model.adj_D2) == 0.89865780882
+        assert pytest.approx(model.SSI) == 0.740619203383
+        assert pytest.approx(model.pseudoR2) == 0.909920590111
+        assert pytest.approx(model.adj_pseudoR2) == 0.909795642717
+        assert pytest.approx(model.SRMSE) == 0.46622685091043831
 
     def test_local_Production(self):
         model = Production(self.f, self.o, self.d_var, self.dij, "exp")
         local = model.local(locs=np.unique(self.o))
-        self.assertEqual(
-            list(local.keys()).sort(),
-            [
+        assert (
+            list(local.keys()).sort()
+            == [
                 "stde0",
                 "stde1",
                 "stde2",
@@ -1227,7 +1227,7 @@ class TestGravity(unittest.TestCase):
                 "D2",
                 "pseudoR2",
                 "param2",
-            ].sort(),
+            ].sort()
         )
 
     def test_Attraction(self):
@@ -1249,7 +1249,7 @@ class TestGravity(unittest.TestCase):
             ],
             atol=0.001,
         )
-        self.assertAlmostEqual(model.AIC, 16275.899321893821, delta=0.0001)
+        assert pytest.approx(model.AIC, rel=0.0001) == 16275.899321893821
         np.testing.assert_allclose(
             model.cov_params,
             [
@@ -1398,9 +1398,9 @@ class TestGravity(unittest.TestCase):
                 ],
             ],
         )
-        self.assertAlmostEqual(model.deviance, 15673.222613627502, delta=0.0001)
-        self.assertAlmostEqual(model.llf, -8126.9496609469106, delta=0.0001)
-        self.assertAlmostEqual(model.llnull, -88037.0499629, delta=0.0001)
+        assert pytest.approx(model.deviance, rel=0.0001) == 15673.222613627502
+        assert pytest.approx(model.llf, rel=0.0001) == -8126.9496609469106
+        assert pytest.approx(model.llnull, rel=0.0001) == -88037.0499629
         np.testing.assert_allclose(
             model.pvalues,
             [
@@ -1526,19 +1526,19 @@ class TestGravity(unittest.TestCase):
                 3.66824277e02,
             ],
         )
-        self.assertAlmostEqual(model.D2, 0.910690541438)
-        self.assertAlmostEqual(model.adj_D2, 0.896049646592)
-        self.assertAlmostEqual(model.SSI, 0.750634498293)
-        self.assertAlmostEqual(model.pseudoR2, 0.90768716507)
-        self.assertAlmostEqual(model.adj_pseudoR2, 0.907562217676)
-        self.assertAlmostEqual(model.SRMSE, 0.59478477816884223)
+        assert pytest.approx(model.D2) == 0.910690541438
+        assert pytest.approx(model.adj_D2) == 0.896049646592
+        assert pytest.approx(model.SSI) == 0.750634498293
+        assert pytest.approx(model.pseudoR2) == 0.90768716507
+        assert pytest.approx(model.adj_pseudoR2) == 0.907562217676
+        assert pytest.approx(model.SRMSE) == 0.59478477816884223
 
     def test_local_Attraction(self):
         model = Attraction(self.f, self.d, self.o_var, self.dij, "exp")
         local = model.local(locs=np.unique(self.d))
-        self.assertEqual(
-            list(local.keys()).sort(),
-            [
+        assert (
+            list(local.keys()).sort()
+            == [
                 "stde0",
                 "stde1",
                 "stde2",
@@ -1559,7 +1559,7 @@ class TestGravity(unittest.TestCase):
                 "D2",
                 "pseudoR2",
                 "param2",
-            ].sort(),
+            ].sort()
         )
 
     def test_Doubly(self):
@@ -1953,9 +1953,9 @@ class TestGravity(unittest.TestCase):
                 ],
             ],
         )
-        self.assertAlmostEqual(model.deviance, 9360.482092561484, delta=0.0001)
-        self.assertAlmostEqual(model.llf, -4970.5795707251054, delta=0.0001)
-        self.assertAlmostEqual(model.llnull, -88037.0499629, delta=0.0001)
+        assert pytest.approx(model.deviance, rel=0.0001) == 9360.482092561484
+        assert pytest.approx(model.llf, rel=0.0001) == -4970.5795707251054
+        assert pytest.approx(model.llnull, rel=0.0001) == -88037.0499629
         np.testing.assert_allclose(
             model.pvalues,
             [
@@ -2102,13 +2102,9 @@ class TestGravity(unittest.TestCase):
                 1.04848355e03,
             ],
         )
-        self.assertAlmostEqual(model.D2, 0.946661920897)
-        self.assertAlmostEqual(model.adj_D2, 0.929870303401)
-        self.assertAlmostEqual(model.SSI, 0.811852110904)
-        self.assertAlmostEqual(model.pseudoR2, 0.943539912198)
-        self.assertAlmostEqual(model.adj_pseudoR2, 0.943335452826)
-        self.assertAlmostEqual(model.SRMSE, 0.37925654532618808)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert pytest.approx(model.D2) == 0.946661920897
+        assert pytest.approx(model.adj_D2) == 0.929870303401
+        assert pytest.approx(model.SSI) == 0.811852110904
+        assert pytest.approx(model.pseudoR2) == 0.943539912198
+        assert pytest.approx(model.adj_pseudoR2) == 0.943335452826
+        assert pytest.approx(model.SRMSE) == 0.37925654532618808

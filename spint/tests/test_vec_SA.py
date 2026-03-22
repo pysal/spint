@@ -5,18 +5,18 @@ Tests for analysis of spatial autocorrelation within vectors
 
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
-import unittest
 
 import numpy as np
+import pytest
 from libpysal.weights.distance import DistanceBand
 
 from ..vec_SA import VecMoran
 
 
-class TestVecMoran(unittest.TestCase):
+class TestVecMoran:
     """Tests VecMoran class"""
 
-    def setUp(self):
+    def setup_method(self):
         self.vecs = np.array(
             [
                 [1, 55, 60, 100, 500],
@@ -34,30 +34,26 @@ class TestVecMoran(unittest.TestCase):
         wo = DistanceBand(self.origins, threshold=9999, alpha=-1.5, binary=False)
         np.random.seed(1)
         vmo = VecMoran(self.vecs, wo, focus="origin", rand="A")
-        self.assertAlmostEqual(vmo.I, 0.645944594367)
-        self.assertAlmostEqual(vmo.p_z_sim, 0.03898650733809228)
+        assert pytest.approx(vmo.I) == 0.645944594367
+        assert pytest.approx(vmo.p_z_sim) == 0.03898650733809228
 
     def test_dest_focused_A(self):
         wd = DistanceBand(self.dests, threshold=9999, alpha=-1.5, binary=False)
         np.random.seed(1)
         vmd = VecMoran(self.vecs, wd, focus="destination", rand="A")
-        self.assertAlmostEqual(vmd.I, -0.764603695022)
-        self.assertAlmostEqual(vmd.p_z_sim, 0.149472673677)
+        assert pytest.approx(vmd.I) == -0.764603695022
+        assert pytest.approx(vmd.p_z_sim) == 0.149472673677
 
     def test_origin_focused_B(self):
         wo = DistanceBand(self.origins, threshold=9999, alpha=-1.5, binary=False)
         np.random.seed(1)
         vmo = VecMoran(self.vecs, wo, focus="origin", rand="B")
-        self.assertAlmostEqual(vmo.I, 0.645944594367)
-        self.assertAlmostEqual(vmo.p_z_sim, 0.02944612633233532)
+        assert pytest.approx(vmo.I) == 0.645944594367
+        assert pytest.approx(vmo.p_z_sim) == 0.02944612633233532
 
     def test_dest_focused_B(self):
         wd = DistanceBand(self.dests, threshold=9999, alpha=-1.5, binary=False)
         np.random.seed(1)
         vmd = VecMoran(self.vecs, wd, focus="destination", rand="B")
-        self.assertAlmostEqual(vmd.I, -0.764603695022)
-        self.assertAlmostEqual(vmd.p_z_sim, 0.12411761124197379)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert pytest.approx(vmd.I) == -0.764603695022
+        assert pytest.approx(vmd.p_z_sim) == 0.12411761124197379

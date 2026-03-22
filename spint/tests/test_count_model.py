@@ -9,19 +9,19 @@ as count data. Results are verified using corresponding functions in R.
 
 __author__ = "Taylor Oshan tayoshan@gmail.com"
 
-import unittest
 
 import libpysal
 import numpy as np
+import pytest
 from spglm.family import Poisson
 
 from ..count_model import CountModel
 
 
-class TestCountModel(unittest.TestCase):
+class TestCountModel:
     """Tests CountModel class"""
 
-    def setUp(self):
+    def setup_method(self):
         db = libpysal.io.open(libpysal.examples.get_path("columbus.dbf"), "r")
         y = np.array(db.by_col("HOVAL"))
         y = np.reshape(y, (49, 1))
@@ -37,11 +37,11 @@ class TestCountModel(unittest.TestCase):
         np.testing.assert_allclose(
             results.params, [3.92159085, 0.01183491, -0.01371397], atol=1.0e-8
         )
-        self.assertIsInstance(results.family, Poisson)
-        self.assertEqual(results.n, 49)
-        self.assertEqual(results.k, 3)
-        self.assertEqual(results.df_model, 2)
-        self.assertEqual(results.df_resid, 46)
+        assert isinstance(results.family, Poisson)
+        assert results.n == 49
+        assert results.k == 3
+        assert results.df_model == 2
+        assert results.df_resid == 46
         np.testing.assert_allclose(
             results.yhat,
             [
@@ -167,12 +167,8 @@ class TestCountModel(unittest.TestCase):
                 -10.28910294,
             ],
         )
-        self.assertAlmostEqual(results.deviance, 230.46013824817649)
-        self.assertAlmostEqual(results.llf, -247.42592089969378)
-        self.assertAlmostEqual(results.AIC, 500.85184179938756)
-        self.assertAlmostEqual(results.D2, 0.388656011675)
-        self.assertAlmostEqual(results.adj_D2, 0.36207583826952761)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert pytest.approx(results.deviance) == 230.46013824817649
+        assert pytest.approx(results.llf) == -247.42592089969378
+        assert pytest.approx(results.AIC) == 500.85184179938756
+        assert pytest.approx(results.D2) == 0.388656011675
+        assert pytest.approx(results.adj_D2) == 0.36207583826952761

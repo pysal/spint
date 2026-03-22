@@ -8,14 +8,12 @@ manually calculated values, using very simple dummy dataset.
 
 __author__ = "Lenka Hasova haska.lenka@gmail.com"
 
-import unittest
-
 import numpy as np
 
 from ..flow_accessibility import Accessibility, _generate_dummy_flows
 
 
-class AccessibilityTest(unittest.TestCase):
+class TestAccessibility:
     def test_accessibility(self):
         flow = _generate_dummy_flows()
         flow = flow.loc[
@@ -38,7 +36,3 @@ class AccessibilityTest(unittest.TestCase):
         )
 
         np.testing.assert_array_equal(flow["results_all=False"], flow["acc_uni"])
-
-
-if __name__ == "__main__":
-    unittest.main()
