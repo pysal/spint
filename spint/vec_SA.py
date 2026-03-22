@@ -3,11 +3,12 @@ Classes for statistics for testing hypotheses of spatial autocorrelation amongst
 vectors.
 """
 
-_author_ = "Taylor Oshan tayoshan@gmail.com, Levi Wolf levi.john.wolf@gmail.com"
-
 import numpy as np
 import scipy.stats as stats
 from libpysal.weights.distance import DistanceBand
+
+__author__ = "Taylor Oshan tayoshan@gmail.com, Levi Wolf levi.john.wolf@gmail.com"
+
 
 PERMUTATIONS = 99
 
@@ -194,7 +195,7 @@ class VecMoran:
             raise AttributeError(
                 "W object missing necessary attributes: "
                 "threshold, alpha, binary, build_sp, silent"
-            )
+            ) from None
 
         self.__moments()
         self.I = self.__calc(self.z)
@@ -249,9 +250,6 @@ class VecMoran:
         s1 = self.w.s1
         W = self.w.s0
         s2 = self.w.s2
-
-        v_num = n * n * s1 - n * s2 + 3 * W * W
-        v_den = (n - 1) * (n + 1) * W * W
 
         a2 = np.sum(np.dot(u, u)) / n
         b2 = np.sum(np.dot(v, v)) / n
@@ -385,15 +383,16 @@ class VecMoran:
         Dense spatial lag operator for.
         If w is row standardized, returns the average of each observation's neighbors;
         if not, returns the weighted sum of each observation's neighbors.
+
         Parameters
         ----------
-        w                   : W
-                              object
-        y                   : array
-                              numpy array with dimensionality conforming to w (see examples)
+        w : W
+            object
+        y : array
+            numpy array with dimensionality conforming to w (see examples)
         Returns
         -------
-        wy                  : array
-                              array of numeric values for the spatial lag
+        wy : array
+            array of numeric values for the spatial lag
         """
         return np.array(w.sparse.todense()) * y
