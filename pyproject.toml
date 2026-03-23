@@ -87,3 +87,8 @@ exclude_lines = [
 ]
 ignore_errors = true
 omit = ["spint/tests/*", "doc/conf.py"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:divide by zero encountered",
+]

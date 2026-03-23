@@ -13,7 +13,6 @@ Dennett, A. (2012). Estimating flows between geographical locations: get me
 
 __author__ = "Tyler Hoffman tylerhoff1@gmail.com"
 
-import unittest
 
 import numpy as np
 from scipy.stats import pearsonr
@@ -23,10 +22,10 @@ from ..universal import PWO, Lenormand, Radiation
 np.random.seed(123456)
 
 
-class TestUniversal(unittest.TestCase):
+class TestUniversal:
     """Tests for universal models"""
 
-    def setUp(self):
+    def setup_method(self):
         self.f = np.array(
             [
                 0,
@@ -606,7 +605,3 @@ class TestUniversal(unittest.TestCase):
             pearsonr(T_P.flatten(), T_obs.flatten()),
             (0.23623562773229048, 0.033734908271368574),
         )
-
-
-if __name__ == "__main__":
-    unittest.main()
