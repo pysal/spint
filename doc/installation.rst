@@ -4,7 +4,7 @@ Installation
 ============
 
 
-spint supports python `3.12`_. Please make sure that you are
+spint supports python >= `3.12`_. Please make sure that you are
 operating in a python 3 environment.
 
 Installing released version
