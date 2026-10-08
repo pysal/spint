@@ -25,7 +25,7 @@ from spreg import (
 from spreg.utils import sphstack
 
 from .count_model import CountModel
-from .utils import sorensen, spcategorical, srmse
+from .utils import CPC, sorensen, spcategorical, srmse
 
 
 class BaseGravity(CountModel):
@@ -140,6 +140,8 @@ class BaseGravity(CountModel):
                       standardized root mean square error
     SSI             : float
                       Sorensen similarity index
+    CPC             : float
+                      common part of commuters
     results         : object
                       full results from estimated model. May contain addtional
                       diagnostics
@@ -307,6 +309,10 @@ class BaseGravity(CountModel):
     def SRMSE(self):
         return srmse(self)
 
+    @cache_readonly
+    def CPC(self):
+        return CPC(self)
+
     def reshape(self, array):
         if isinstance(array, np.ndarray):
             return array.reshape((-1, 1))
@@ -425,6 +431,8 @@ class Gravity(BaseGravity):
                       standardized root mean square error
     SSI             : float
                       Sorensen similarity index
+    CPC             : float
+                      common part of commuters
     results         : object
                       Full results from estimated model. May contain addtional
                       diagnostics
@@ -650,6 +658,8 @@ class Production(BaseGravity):
                       standardized root mean square error
     SSI             : float
                       Sorensen similarity index
+    CPC             : float
+                      common part of commuters
     results         : object
                       Full results from estimated model. May contain addtional
                       diagnostics
@@ -877,6 +887,8 @@ class Attraction(BaseGravity):
                       standardized root mean square error
     SSI             : float
                       Sorensen similarity index
+    CPC             : float
+                      common part of commuters
     results         : object
                       Full results from estimated model. May contain addtional
                       diagnostics
@@ -1102,6 +1114,8 @@ class Doubly(BaseGravity):
                       standardized root mean square error
     SSI             : float
                       Sorensen similarity index
+    CPC             : float
+                      common part of commuters
     results         : object
                       Full results from estimated model. May contain addtional
                       diagnostics
