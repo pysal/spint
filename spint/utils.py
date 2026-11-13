@@ -11,24 +11,28 @@ from itertools import count
 import numpy as np
 from scipy import sparse as sp
 
-''' see `<<<<<` below - `Y` not defined
+
 def CPC(model):
     """
-    Common part of commuters based on Sorensen index
-    Lenormand et al. 2012
+    Common part of commuters based on the Sorensen index
+
+    CPC = 2 * sum(min(y, yhat)) / (sum(y) + sum(yhat)), which is 1 for a
+    perfect fit and 0 when no flows are shared. See Gargiulo et al. 2011
+    and Lenormand et al. 2012.
     """
-    y = model.y
     try:
-        yhat = model.yhat.resahpe((-1, 1))
+        y = model.y.reshape((-1, 1))
     except BaseException:
-        yhat = model.mu((-1, 1))
-    N = model.n
+        y = model.f.reshape((-1, 1))
+    try:
+        yhat = model.yhat.reshape((-1, 1))
+    except BaseException:
+        yhat = model.mu.reshape((-1, 1))
     YYhat = np.hstack([y, yhat])
     NCC = np.sum(np.min(YYhat, axis=1))
-    NCY = np.sum(Y)  # noqa: F821 Undefined name `Y` <<<<<
+    NCY = np.sum(y)
     NCYhat = np.sum(yhat)
-    return (N * NCC) / (NCY + NCYhat)
-'''
+    return (2.0 * NCC) / (NCY + NCYhat)
 
 
 def sorensen(model):

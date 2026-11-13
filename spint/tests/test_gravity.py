@@ -865,6 +865,7 @@ class TestGravity:
         assert pytest.approx(model.D2) == 0.88713874099960177
         assert pytest.approx(model.adj_D2) == 0.88215956780840776
         assert pytest.approx(model.SSI) == 0.72706171189789603
+        assert pytest.approx(model.CPC) == 0.8186358236485028
         assert pytest.approx(model.pseudoR2) == 0.88421303645743465
         assert pytest.approx(model.adj_pseudoR2) == 0.88416760104130376
         assert pytest.approx(model.SRMSE) == 0.62063116008447083
@@ -1197,6 +1198,7 @@ class TestGravity:
         assert pytest.approx(model.D2) == 0.912931356874
         assert pytest.approx(model.adj_D2) == 0.89865780882
         assert pytest.approx(model.SSI) == 0.740619203383
+        assert pytest.approx(model.CPC) == 0.84530923772466
         assert pytest.approx(model.pseudoR2) == 0.909920590111
         assert pytest.approx(model.adj_pseudoR2) == 0.909795642717
         assert pytest.approx(model.SRMSE) == 0.46622685091043831
@@ -1529,6 +1531,7 @@ class TestGravity:
         assert pytest.approx(model.D2) == 0.910690541438
         assert pytest.approx(model.adj_D2) == 0.896049646592
         assert pytest.approx(model.SSI) == 0.750634498293
+        assert pytest.approx(model.CPC) == 0.8475888092212231
         assert pytest.approx(model.pseudoR2) == 0.90768716507
         assert pytest.approx(model.adj_pseudoR2) == 0.907562217676
         assert pytest.approx(model.SRMSE) == 0.59478477816884223
